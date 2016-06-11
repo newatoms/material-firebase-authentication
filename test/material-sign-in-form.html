@@ -2,29 +2,29 @@
 
 <html>
   <head>
-    <title>material-login-form test</title>
+    <title>material-sign-in-form test</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../material-login-form.html">
+    <link rel="import" href="../material-sign-in-form.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
   </head>
   <body>
 
     <test-fixture id="basic">
       <template>
-        <material-login-form></material-login-form>
+        <material-sign-in-form></material-sign-in-form>
       </template>
     </test-fixture>
 
     <script>
-      suite('material-login-form', function() {
+      suite('material-sign-in-form', function() {
 
         test('instantiating the element works', function() {
           var element = fixture('basic');
-          assert.equal(element.is, 'material-login-form');
+          assert.equal(element.is, 'material-sign-in-form');
         });
 
         testProviderButton('twitter')
@@ -33,11 +33,11 @@
         testProviderButton('github')
 
         function testProviderButton (provider) {
-          var testTitle = 'When I click the ' + provider + ' button, the login event is fired with the \''+ provider + '\' provider'
+          var testTitle = 'When I click the ' + provider + ' button, the signIn event is fired with the \''+ provider + '\' provider'
 
           return test(testTitle, function (done) {
             var element = fixture('basic');
-            element.addEventListener('login', function (event) {
+            element.addEventListener('sign-in', function (event) {
               var expectedObject = {
                 provider: provider
               }

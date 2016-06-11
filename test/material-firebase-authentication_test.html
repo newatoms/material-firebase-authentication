@@ -38,17 +38,17 @@
           assert.equal(element.is, 'material-firebase-authentication');
         });
 
-        test('the default page is \'login\'', function() {
+        test('the default page is \'signIn\'', function() {
           var element = fixture('basic');
-          assert.equal(element.page, 'login');
+          assert.equal(element.page, 'signIn');
 
           var pages = element.querySelector('iron-pages')
-          assert.equal(pages.selected, 'login')
+          assert.equal(pages.selected, 'signIn')
         });
 
-        test('\'login\' page exists', function () {
+        test('\'signIn\' page exists', function () {
           var element = fixture('basic');
-          var page = element.querySelector('iron-pages section[data-page="login"]')
+          var page = element.querySelector('iron-pages section[data-page="signIn"]')
           expect(page).to.exist
         });
 

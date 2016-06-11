@@ -2,7 +2,7 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="material-login-form.html">
+<link rel="import" href="material-sign-in-form.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -28,10 +28,10 @@ Usage:
                    user="{{user}}"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
-      <section data-page="login">
+      <section data-page="signIn">
         <h2>{{localize('greeting')}}</h2>
         <h2>Log in</h2>
-        <material-login-form></material-login-form>
+        <material-sign-in-form password-provider-button-label="[[localize('passwordProviderButtonLabel')]]"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -48,10 +48,10 @@ Usage:
       ],
 
       properties: {
-        /** The current page to show, valid values are: `login`, `signup` */
+        /** The current page to show, valid values are: `signIn`, `signup` */
         page: {
           type: String,
-          value: 'login'
+          value: 'signIn'
         },
         /** True if the client is authenticated and false if the client is not authenticated */
         signedIn: {
@@ -72,10 +72,12 @@ Usage:
           value: function () {
             return {
               'en': {
-                'greeting': 'Hello!'
+                'greeting': 'Hello!',
+                'passwordProviderButtonLabel': 'Sign in'
               },
-              'fr' : {
-                'greeting': 'Bonjour!'
+              'nl' : {
+                'greeting': 'Hallo!',
+                'passwordProviderButtonLabel': 'Aanmelden'
               }
             }
           }

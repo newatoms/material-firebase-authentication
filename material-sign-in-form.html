@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<!--
+A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider
+
+Usage:
+
+    <material-sign-in-form></material-sign-in-form>
+
+@demo demo/material-sign-in-form.html
+-->
+<dom-module id="material-sign-in-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <section id="oauth-providers">
+      <ul>
+        <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
+        <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
+        <li><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
+        <li><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
+      </ul>
+    </section>
+
+    <section id="password-provider">
+      <paper-button on-tap="signInWithPassword">{{passwordProviderButtonLabel}}</paper-button>
+    </section>
+  </template>
+  <script>
+    Polymer({
+      is: 'material-sign-in-form',
+
+      properties: {
+        /** E-mail address for use with the `password` provider **/
+        email: {
+          type: String,
+          notify: true
+        },
+        /** Password for use with the `password` provider **/
+        password: {
+          type: String,
+          notify: true
+        },
+        /** Log in with password button label */
+        passwordProviderButtonLabel: {
+          type: String,
+          value: 'Sign in'
+        }
+      },
+
+      /** Fire the `signIn` event with provider `github` */
+      signInWithGithub: function () {
+        return this.signIn('github')
+      },
+      /** Fire the `signIn` event with provider `google` */
+      signInWithGoogle: function () {
+        return this.signIn('google')
+      },
+      /** Fire the `signIn` event with provider `facebook` */
+      signInWithFacebook: function () {
+        return this.signIn('facebook')
+      },
+      /** Fire the `signIn` event with provider `twitter` */
+      signInWithTwitter: function () {
+        return this.signIn('twitter')
+      },
+
+      /** Fire the `signIn` event with provider `password` and the email and password in the options */
+      signInWithPassword: function () {
+        return this.signIn('password', {
+          email: this.email,
+          password: this.password
+        })
+      },
+
+      /**
+      * Non bubling, to signal the need for a signIn.
+      *
+      * @event signIn
+      */
+
+      /**
+      * Fire the `signIn` event
+      *
+      * @param {string} provider can be any valid Firebase authentication provider.
+      * @param {object} options object of the options to fire with the event, becomes event detail.
+      */
+      signIn: function (provider, options) {
+        return this.fire('sign-in', {
+          provider: provider,
+          options: options
+        }, {
+          bubbles: false
+        })
+      }
+
+    });
+  </script>
+</dom-module>
