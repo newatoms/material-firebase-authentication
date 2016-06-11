@@ -21,7 +21,8 @@ Usage:
       }
     </style>
 
-    <firebase-auth id="auth"></firebase-auth>
+    <firebase-auth id="auth"
+                   signed-in="{{signedIn}}"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="login">
@@ -42,6 +43,12 @@ Usage:
         page: {
           type: String,
           value: 'login'
+        },
+        /** True if the client is authenticated and false if the client is not authenticated */
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          value: false
         }
       },
 

@@ -88,6 +88,11 @@
           expect(firebaseAuth.app).to.have.a.property('H').to.be.object
         });
 
+        test('We are signed out by default', function () {
+          var element = fixture('basic')
+          assert.equal(element.signedIn, false)
+        })
+
       });
     </script>
   </body>
