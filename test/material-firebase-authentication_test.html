@@ -40,6 +40,21 @@
           expect(page).to.exist
         });
 
+        test('\'signup\' page exists', function () {
+          var element = fixture('basic');
+          var page = element.querySelector('iron-pages section[data-page="signup"]')
+          expect(page).to.exist
+        });
+
+        test('Switch from the default page to the page \'signup\'', function() {
+          var element = fixture('basic');
+          var pages = element.querySelector('iron-pages')
+
+          element.set('page', 'signup')
+
+          assert.equal(pages.selected, 'signup')
+        });
+
         test('Firebase auth is an instance of \'firebase-auth\'', function() {
           var element = fixture('basic');
           var firebaseAuth = element.$.auth
