@@ -29,9 +29,9 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <h2>{{localize('greeting')}}</h2>
-        <h2>Log in</h2>
-        <material-sign-in-form password-provider-button-label="[[localize('passwordProviderButtonLabel')]]"></material-sign-in-form>
+        <material-sign-in-form password-provider-button-label="[[localize('passwordProviderButtonLabel')]]"
+                               email-input-label="{{localize('emailInputLabel')}}"
+                               password-input-label="{{localize('passwordInputLabel')}}"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -71,13 +71,15 @@ Usage:
         resources: {
           value: function () {
             return {
-              'en': {
-                'greeting': 'Hello!',
-                'passwordProviderButtonLabel': 'Sign in'
+              en: {
+                passwordProviderButtonLabel: 'Sign in',
+                emailInputLabel: 'E-mail',
+                passwordInputLabel: 'Password'
               },
-              'nl' : {
-                'greeting': 'Hallo!',
-                'passwordProviderButtonLabel': 'Aanmelden'
+              nl: {
+                passwordProviderButtonLabel: 'Aanmelden',
+                emailInputLabel: 'E-mail',
+                passwordInputLabel: 'Wachtwoord'
               }
             }
           }
