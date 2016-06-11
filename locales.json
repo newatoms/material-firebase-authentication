@@ -1,0 +1,12 @@
+{
+  "en": {
+    "passwordProviderButtonLabel": "Sign in",
+    "emailInputLabel": "E-mail",
+    "passwordInputLabel": "Password"
+  },
+  "nl": {
+    "passwordProviderButtonLabel": "Aanmelden",
+    "emailInputLabel": "E-mail",
+    "passwordInputLabel": "Wachtwoord"
+  }
+}

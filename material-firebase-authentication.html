@@ -29,9 +29,8 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form password-provider-button-label="[[localize('passwordProviderButtonLabel')]]"
-                               email-input-label="{{localize('emailInputLabel')}}"
-                               password-input-label="{{localize('passwordInputLabel')}}"></material-sign-in-form>
+        <material-sign-in-form language="[[language]]"
+                               resources="[[resources]]"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -64,26 +63,6 @@ Usage:
           type: Object,
           notify: true
         },
-        /**
-        * The dictionary of localized messages, for each of the languages that are going to be used.
-        * See [Format.js message syntax](http://formatjs.io/guides/message-syntax/) for more information on the message syntax.
-        */
-        resources: {
-          value: function () {
-            return {
-              en: {
-                passwordProviderButtonLabel: 'Sign in',
-                emailInputLabel: 'E-mail',
-                passwordInputLabel: 'Password'
-              },
-              nl: {
-                passwordProviderButtonLabel: 'Aanmelden',
-                emailInputLabel: 'E-mail',
-                passwordInputLabel: 'Wachtwoord'
-              }
-            }
-          }
-        },
         /** The language to use for locale string */
         language: {
           type: String,
@@ -91,6 +70,9 @@ Usage:
         }
       },
 
+      attached: function() {
+        this.loadResources(this.resolveUrl('locales.json'));
+      },
     });
   </script>
 </dom-module>
