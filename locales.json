@@ -2,11 +2,29 @@
   "en": {
     "passwordProviderButtonLabel": "Sign in",
     "emailInputLabel": "E-mail",
-    "passwordInputLabel": "Password"
+    "passwordInputLabel": "Password",
+    "signInWithProviderDescription": "Sign in using a third party account",
+    "signInWithPasswordDescription": "Or sign in with your e-mail address and password",
+    "invalidEmailError": "Invalid e-mail address",
+    "invalidPasswordError": "Invalid password",
+    "accountDoesNotExistError": "Account does not exist",
+    "applicationNotAuthorizedWithProviderError": "Application not authorized with provider",
+    "providerError": "Provider error",
+    "networkError": "Network error",
+    "genericError": "Error"
   },
   "nl": {
     "passwordProviderButtonLabel": "Aanmelden",
     "emailInputLabel": "E-mail",
-    "passwordInputLabel": "Wachtwoord"
+    "passwordInputLabel": "Wachtwoord",
+    "signInWithProviderDescription": "Aanmelden met een account van een derde partij",
+    "signInWithPasswordDescription": "Of meld je aan met je e-mail adres en wachtwoord",
+    "invalidEmailError": "Ongeldig e-mail adres",
+    "invalidPasswordError": "Ongeldig wachtwoord",
+    "accountDoesNotExistError": "Account bestaat niet",
+    "applicationNotAuthorizedWithProviderError": "Toepassing niet geauthoriseerd door derde partij",
+    "providerError": "Fout met derde partij",
+    "networkError": "Netwerkfout",
+    "genericError": "Fout"
   }
 }

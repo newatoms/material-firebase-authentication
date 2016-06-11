@@ -82,6 +82,26 @@
           element.querySelector('#password-provider paper-button').click()
         })
 
+        test('When the error method is used, the right errorType is set', function () {
+          var element = fixture('basic');
+
+          element.error({
+            code: "INVALID_EMAIL"
+          })
+
+          assert.equal(element.errorType, 'invalidEmailError')
+        })
+
+        test('When I login the errorType is unset', function () {
+          var element = fixture('basic');
+
+          element._setErrorType('invalidEmailError')
+          assert.equal(element.errorType, 'invalidEmailError')
+
+          element.signIn()
+          assert.equal(element.errorType, null)
+        })
+
       });
 
       function testProviderButton (provider) {

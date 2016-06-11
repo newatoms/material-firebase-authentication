@@ -24,6 +24,7 @@ Usage:
     </style>
 
     <section id="oauth-providers">
+      <p>{{localize('signInWithProviderDescription')}}</p>
       <ul>
         <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
         <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
@@ -33,9 +34,13 @@ Usage:
     </section>
 
     <section id="password-provider">
+      <p>{{localize('signInWithPasswordDescription')}}</p>
       <gold-email-input label="{{localize('emailInputLabel')}}" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
       <paper-input label="{{localize('passwordInputLabel')}}" value="{{password}}" type="password" auto-validate></paper-input>
       <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">{{localize('passwordProviderButtonLabel')}}</paper-button>
+      <p hidden$="{{!localize(errorType)}}">
+        {{localize(errorType)}}
+      </p>
     </section>
   </template>
   <script>
@@ -79,6 +84,12 @@ Usage:
           type: Boolean,
           computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
           value: false
+        },
+        /** Both the e-mail and the password are filled in */
+        errorType: {
+          type: String,
+          value: null,
+          readOnly: true
         },
         language: {
           value: 'en'
@@ -124,12 +135,38 @@ Usage:
       * @param {object} options object of the options to fire with the event, becomes event detail.
       */
       signIn: function (provider, options) {
+        this._setErrorType(null)
         return this.fire('sign-in', {
           provider: provider,
           options: options
         }, {
           bubbles: false
         })
+      },
+
+      /**
+      * Set the error message to display
+      */
+      error: function (error) {
+        if (error.code === "INVALID_EMAIL") {
+          return this._setErrorType('invalidEmailError')
+        }
+        if (error.code === "INVALID_PASSWORD") {
+          return this._setErrorType('invalidPasswordError')
+        }
+        if (error.code === "INVALID_USER"	) {
+          return this._setErrorType('accountDoesNotExistError')
+        }
+        if (error.code === "USER_DENIED") {
+          return this._setErrorType('applicationNotAuthorizedWithProviderError')
+        }
+        if (error.code === "PROVIDER_ERROR") {
+          return this._setErrorType('providerError')
+        }
+        if (error.code === "NETWORK_ERROR") {
+          return this._setErrorType('networkError')
+        }
+        return this._setErrorType('genericError')
       },
 
       _emailAndPasswordValid: function (email, emailInvalid, password) {
