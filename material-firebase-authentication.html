@@ -82,7 +82,7 @@ Usage:
       },
 
       _handleAuthError: function (evt, error) {
-        console.error('Authentication error', error)
+        this.fire('error', error)
         this.querySelector('material-sign-in-form').error(error)
       },
 
