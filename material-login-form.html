@@ -47,19 +47,24 @@ Usage:
         }
       },
 
+      /** Fire the `login` event with provider `github` */
       loginWithGithub: function () {
         return this.login('github')
       },
+      /** Fire the `login` event with provider `google` */
       loginWithGoogle: function () {
         return this.login('google')
       },
+      /** Fire the `login` event with provider `facebook` */
       loginWithFacebook: function () {
         return this.login('facebook')
       },
+      /** Fire the `login` event with provider `twitter` */
       loginWithTwitter: function () {
         return this.login('twitter')
       },
 
+      /** Fire the `login` event with provider `password` and the email and password in the options */
       loginWithPassword: function () {
         return this.login('password', {
           email: this.email,
