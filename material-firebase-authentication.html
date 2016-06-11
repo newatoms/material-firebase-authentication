@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="material-sign-in-form.html">
 <link rel="import" href="material-create-account-form.html">
 
@@ -30,8 +29,7 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form language="[[language]]"
-                               resources="[[resources]]"></material-sign-in-form>
+        <material-sign-in-form ></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -43,10 +41,6 @@ Usage:
     Polymer({
 
       is: 'material-firebase-authentication',
-
-      behaviors: [
-        Polymer.AppLocalizeBehavior
-      ],
 
       properties: {
         /** The current page to show, valid values are: `signIn`, `signup` */
@@ -65,15 +59,6 @@ Usage:
           type: Object,
           notify: true
         },
-        /** The language to use for locale string */
-        language: {
-          type: String,
-          value: 'en'
-        }
-      },
-
-      attached: function() {
-        this.loadResources(this.resolveUrl('locales.json'));
       },
     });
   </script>

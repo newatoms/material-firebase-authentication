@@ -2,7 +2,6 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
 A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider.
@@ -24,7 +23,7 @@ Usage:
     </style>
 
     <section id="oauth-providers">
-      <p>{{localize('signInWithProviderDescription')}}</p>
+      <p>Sign in using a third party account</p>
       <ul>
         <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
         <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
@@ -34,22 +33,18 @@ Usage:
     </section>
 
     <section id="password-provider">
-      <p>{{localize('signInWithPasswordDescription')}}</p>
+      <p>Or sign in with your e-mail address and password</p>
       <gold-email-input label="{{localize('emailInputLabel')}}" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
       <paper-input label="{{localize('passwordInputLabel')}}" value="{{password}}" type="password" auto-validate></paper-input>
-      <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">{{localize('passwordProviderButtonLabel')}}</paper-button>
+      <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
       <p hidden$="{{!localize(errorType)}}">
-        {{localize(errorType)}}
+        {{errorType}}
       </p>
     </section>
   </template>
   <script>
     Polymer({
       is: 'material-sign-in-form',
-
-      behaviors: [
-        Polymer.AppLocalizeBehavior
-      ],
 
       properties: {
         /** E-mail address for use with the `password` provider **/
@@ -64,21 +59,6 @@ Usage:
           notify: true,
           value: ''
         },
-        /** Log in with password button label */
-        passwordProviderButtonLabel: {
-          type: String,
-          value: 'Sign in'
-        },
-        /** E-mail field label */
-        emailInputLabel: {
-          type: String,
-          value: 'E-mail address'
-        },
-        /** Password field label */
-        passwordInputLabel: {
-          type: String,
-          value: 'Password'
-        },
         /** Both the e-mail and the password are filled in */
         inputsValid: {
           type: Boolean,
@@ -91,9 +71,7 @@ Usage:
           value: null,
           readOnly: true
         },
-        language: {
-          value: 'en'
-        },
+
         _emailInvalid: Boolean,
       },
 
@@ -171,10 +149,6 @@ Usage:
 
       _emailAndPasswordValid: function (email, emailInvalid, password) {
         return (email !== '' && password !== '' && emailInvalid === false)
-      },
-
-      attached: function() {
-        this.loadResources(this.resolveUrl('locales.json'));
       },
     });
   </script>
