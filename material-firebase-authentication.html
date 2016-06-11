@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -19,6 +20,8 @@ Usage:
         display: block;
       }
     </style>
+
+    <firebase-auth id="auth"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="login">

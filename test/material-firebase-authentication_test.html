@@ -39,6 +39,13 @@
           var page = element.querySelector('iron-pages section[data-page="login"]')
           expect(page).to.exist
         });
+
+        test('Firebase auth is an instance of \'firebase-auth\'', function() {
+          var element = fixture('basic');
+          var firebaseAuth = element.$.auth
+          assert.equal(firebaseAuth.is, 'firebase-auth');
+        });
+
       });
     </script>
   </body>
