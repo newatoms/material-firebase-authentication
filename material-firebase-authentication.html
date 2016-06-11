@@ -1,5 +1,17 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
 
+<!--
+Material design application to handle Firebase authentication, sign up and all of its related usecases.
+
+The element consists of several pages to handle different aspects of the authentication process.
+
+Usage:
+
+    <material-firebase-authentication page="login"></material-firebase-authentication>
+
+@demo demo/index.html
+-->
 <dom-module id="material-firebase-authentication">
   <template>
     <style>
@@ -7,20 +19,25 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
-  </template>
 
+    <iron-pages selected="{{page}}" attr-for-selected="data-page">
+      <section data-page="login">
+        <h2>Login</h2>
+      </section>
+    </iron-pages>
+  </template>
   <script>
     Polymer({
 
       is: 'material-firebase-authentication',
 
       properties: {
-        prop1: {
+        /** The current page to show */
+        page: {
           type: String,
-          value: 'material-firebase-authentication',
-        },
-      },
+          value: 'login'
+        }
+      },  
 
     });
   </script>
