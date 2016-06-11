@@ -9,12 +9,24 @@
     <script src="../../web-component-tester/browser.js"></script>
 
     <link rel="import" href="../material-firebase-authentication.html">
+    <link rel="import" href="../../polymerfire/firebase-app.html">
   </head>
   <body>
+
+    <firebase-app api-key="AIzaSyBPurb3fZUIbmVqMB-OGKF2L9KDNxAIZkM"
+                  auth-domain="material-firebase-auth.firebaseapp.com"
+                  database-url="https://material-firebase-auth.firebaseio.com"
+                  storage-bucket="material-firebase-auth.appspot.com"></firebase-app>
 
     <test-fixture id="basic">
       <template>
         <material-firebase-authentication></material-firebase-authentication>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="signup-as-page">
+      <template>
+        <material-firebase-authentication page="signup"></material-firebase-authentication>
       </template>
     </test-fixture>
 
@@ -55,10 +67,25 @@
           assert.equal(pages.selected, 'signup')
         });
 
+        test('Setting page to \'signup\' on the element in the HTML works', function() {
+          var element = fixture('signup-as-page');
+          assert.equal(element.page, 'signup');
+
+          var pages = element.querySelector('iron-pages')
+          assert.equal(pages.selected, 'signup')
+        });
+
         test('Firebase auth is an instance of \'firebase-auth\'', function() {
           var element = fixture('basic');
           var firebaseAuth = element.$.auth
           assert.equal(firebaseAuth.is, 'firebase-auth');
+        });
+
+        test('Firebase auth gets the app from \'firebase-app\'', function() {
+          var element = fixture('basic');
+          var firebaseAuth = element.$.auth
+          var testApp = document.querySelector('firebase-app')
+          expect(firebaseAuth.app).to.have.a.property('H').to.be.object
         });
 
       });
