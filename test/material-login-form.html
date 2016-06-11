@@ -27,6 +27,34 @@
           assert.equal(element.is, 'material-login-form');
         });
 
+        testProviderButton('twitter')
+        testProviderButton('google')
+        testProviderButton('facebook')
+        testProviderButton('github')
+
+        function testProviderButton (provider) {
+          var testTitle = 'When I click the ' + provider + ' button, the login event is fired with the \''+ provider + '\' provider'
+
+          return test(testTitle, function (done) {
+            var element = fixture('basic');
+            element.addEventListener('login', function (event) {
+              var expectedObject = {
+                provider: provider
+              }
+              assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+              done()
+            })
+
+            var buttons = element.querySelectorAll('#oauth-providers paper-button')
+
+            for (var i = 0; i < buttons.length; i++) {
+              if (buttons[i].innerHTML.toLowerCase() === provider.toLowerCase()) {
+                buttons[i].click()
+              }
+            }
+          })
+        }
+
       });
     </script>
   </body>
