@@ -94,6 +94,12 @@
           expect(element.user).to.be.null
         });
 
+        test('The default lanugage is English and has strings', function () {
+          var element = fixture('basic')
+          assert.equal(element.language, 'en')
+          expect(element.resources.en).to.not.be.empty
+        });
+
       });
     </script>
   </body>

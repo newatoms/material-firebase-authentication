@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="material-login-form.html">
 
 <!--
@@ -28,6 +29,7 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="login">
+        <h2>{{localize('greeting')}}</h2>
         <h2>Log in</h2>
       </section>
       <section data-page="signup">
@@ -39,6 +41,10 @@ Usage:
     Polymer({
 
       is: 'material-firebase-authentication',
+
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
 
       properties: {
         /** The current page to show, valid values are: `login`, `signup` */
@@ -56,6 +62,27 @@ Usage:
         user: {
           type: Object,
           notify: true
+        },
+        /**
+        * The dictionary of localized messages, for each of the languages that are going to be used.
+        * See [Format.js message syntax](http://formatjs.io/guides/message-syntax/) for more information on the message syntax.
+        */
+        resources: {
+          value: function () {
+            return {
+              'en': {
+                'greeting': 'Hello!'
+              },
+              'fr' : {
+                'greeting': 'Bonjour!'
+              }
+            }
+          }
+        },
+        /** The language to use for locale string */
+        language: {
+          type: String,
+          value: 'en'
         }
       },
 
