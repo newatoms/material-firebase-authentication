@@ -91,7 +91,8 @@
         test('We are signed out by default', function () {
           var element = fixture('basic')
           assert.equal(element.signedIn, false)
-        })
+          expect(element.user).to.be.null
+        });
 
       });
     </script>

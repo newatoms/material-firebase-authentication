@@ -22,7 +22,8 @@ Usage:
     </style>
 
     <firebase-auth id="auth"
-                   signed-in="{{signedIn}}"></firebase-auth>
+                   signed-in="{{signedIn}}"
+                   user="{{user}}"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="login">
@@ -49,6 +50,11 @@ Usage:
           type: Boolean,
           notify: true,
           value: false
+        },
+        /** The currently authenticated user with user-related metadata from `firebase-auth` */
+        user: {
+          type: Object,
+          notify: true
         }
       },
 
