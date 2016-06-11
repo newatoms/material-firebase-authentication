@@ -20,9 +20,13 @@
     </test-fixture>
 
     <script>
+      var invalidEmail = 'finnthehuman@example.'
+      var validEmail = 'finnthehuman@example.com'
+      var validPassword = 'secretstuff'
+
       suite('material-sign-in-form', function() {
 
-        test('instantiating the element works', function() {
+        test('Instantiating the element works.', function() {
           var element = fixture('basic');
           assert.equal(element.is, 'material-sign-in-form');
         });
@@ -32,30 +36,76 @@
         testProviderButton('facebook')
         testProviderButton('github')
 
-        function testProviderButton (provider) {
-          var testTitle = 'When I click the ' + provider + ' button, the signIn event is fired with the \''+ provider + '\' provider'
+        test('Sign in button is disabled by default', function () {
+          var element = fixture('basic');
+          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+        })
 
-          return test(testTitle, function (done) {
-            var element = fixture('basic');
-            element.addEventListener('sign-in', function (event) {
-              var expectedObject = {
-                provider: provider
-              }
-              assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-              done()
-            })
+        test('Sign in button is disabled when we put in bogus e-mail address', function () {
+          var element = fixture('basic');
+          element.set('email', invalidEmail)
+          element.set('password', validPassword)
+          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+        })
 
-            var buttons = element.querySelectorAll('#oauth-providers paper-button')
+        test('Sign in button is disabled when we put in no password', function () {
+          var element = fixture('basic');
+          element.set('email', validEmail)
+          element.set('password', '')
+          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+        })
 
-            for (var i = 0; i < buttons.length; i++) {
-              if (buttons[i].innerHTML.toLowerCase() === provider.toLowerCase()) {
-                buttons[i].click()
+        test('Sign in button is enabled when we put in good info', function () {
+          var element = fixture('basic');
+          element.set('email', validEmail)
+          element.set('password', validPassword)
+          assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
+        })
+
+        test('When I click the Sign In button the signIn event is fired with the \'password\' provider', function (done) {
+          var element = fixture('basic');
+          element.set('email', validEmail)
+          element.set('password', validPassword)
+
+          element.addEventListener('sign-in', function (event) {
+            var expectedObject = {
+              provider: 'password',
+              options: {
+                email: validEmail,
+                password: validPassword
               }
             }
+            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+            done()
           })
-        }
+
+          element.querySelector('#password-provider paper-button').click()
+        })
 
       });
+
+      function testProviderButton (provider) {
+        var testTitle = 'When I click the ' + provider + ' button, the signIn event is fired with the \''+ provider + '\' provider'
+
+        return test(testTitle, function (done) {
+          var element = fixture('basic');
+          element.addEventListener('sign-in', function (event) {
+            var expectedObject = {
+              provider: provider
+            }
+            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+            done()
+          })
+
+          var buttons = element.querySelectorAll('#oauth-providers paper-button')
+
+          for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].innerHTML.toLowerCase() === provider.toLowerCase()) {
+              buttons[i].click()
+            }
+          }
+        })
+      }
     </script>
   </body>
 </html>
