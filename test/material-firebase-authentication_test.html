@@ -100,6 +100,14 @@
           expect(element.resources.en).to.not.be.empty
         });
 
+        test('The language strings of elements are updated when the language changes', function () {
+          var element = fixture('basic')
+          var signInForm = element.querySelector('material-sign-in-form')
+          assert.equal(signInForm.passwordProviderButtonLabel, element.resources.en.passwordProviderButtonLabel)
+          element.set('language', 'nl')
+          assert.equal(signInForm.passwordProviderButtonLabel, element.resources.nl.passwordProviderButtonLabel)
+        });
+
       });
     </script>
   </body>
