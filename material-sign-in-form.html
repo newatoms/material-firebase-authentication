@@ -126,25 +126,25 @@ Usage:
       * Set the error message to display
       */
       error: function (error) {
-        if (error.code === "INVALID_EMAIL") {
-          return this._setErrorType('invalidEmailError')
+        if (error.code === "auth/invalid-email") {
+          return this._setErrorType('Invalid e-mail address')
         }
-        if (error.code === "INVALID_PASSWORD") {
-          return this._setErrorType('invalidPasswordError')
+        if (error.code === "auth/wrong-password") {
+          return this._setErrorType('Invalid password')
         }
-        if (error.code === "INVALID_USER"	) {
-          return this._setErrorType('accountDoesNotExistError')
+        if (error.code === "auth/user-not-found") {
+          return this._setErrorType('Account does not exist')
         }
-        if (error.code === "USER_DENIED") {
-          return this._setErrorType('applicationNotAuthorizedWithProviderError')
+        if (error.code === "auth/unauthorized-domain") {
+          return this._setErrorType('Application not authorized with provider')
         }
-        if (error.code === "PROVIDER_ERROR") {
-          return this._setErrorType('providerError')
+        if (error.code === "auth/operation-not-allowed") {
+          return this._setErrorType('Provider error')
         }
-        if (error.code === "NETWORK_ERROR") {
-          return this._setErrorType('networkError')
+        if (error.code === "auth/network-request-failed") {
+          return this._setErrorType('Network error')
         }
-        return this._setErrorType('genericError')
+        return this._setErrorType('Error')
       },
 
       _emailAndPasswordValid: function (email, emailInvalid, password) {

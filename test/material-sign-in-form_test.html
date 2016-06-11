@@ -85,10 +85,10 @@
           var element = fixture('basic');
 
           element.error({
-            code: "INVALID_EMAIL"
+            code: "auth/invalid-email"
           })
 
-          assert.equal(element.errorType, 'invalidEmailError')
+          assert.equal(element.errorType, 'Invalid e-mail address')
         })
 
         test('When I login the errorType is unset', function () {
