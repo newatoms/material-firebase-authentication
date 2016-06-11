@@ -19,7 +19,6 @@ Usage:
     </style>
 
     <section id="oauth-providers">
-
       <ul>
         <li><paper-button on-tap="loginWithGithub">GitHub</paper-button></li>
         <li><paper-button on-tap="loginWithGoogle">Google</paper-button></li>
@@ -37,10 +36,12 @@ Usage:
       is: 'material-login-form',
 
       properties: {
+        /** E-mail address for use with the `password` provider **/
         email: {
           type: String,
           notify: true
         },
+        /** Password for use with the `password` provider **/
         password: {
           type: String,
           notify: true
@@ -72,6 +73,18 @@ Usage:
         })
       },
 
+      /**
+      * Non bubling, to signal the need for a login.
+      *
+      * @event login
+      */
+
+      /**
+      * Fire the `login` event
+      *
+      * @param {string} provider can be any valid Firebase authentication provider.
+      * @param {object} options object of the options to fire with the event, becomes event detail.
+      */
       login: function (provider, options) {
         return this.fire('login', {
           provider: provider,
@@ -80,6 +93,7 @@ Usage:
           bubbles: false
         })
       }
+
     });
   </script>
 </dom-module>
