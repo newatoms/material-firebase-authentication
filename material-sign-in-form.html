@@ -148,22 +148,22 @@ Usage:
       * Set the error message to display
       */
       error: function (error) {
-        if (error.code === "INVALID_EMAIL") {
+        if (error.code === "auth/invalid-email") {
           return this._setErrorType('invalidEmailError')
         }
-        if (error.code === "INVALID_PASSWORD") {
+        if (error.code === "auth/wrong-password") {
           return this._setErrorType('invalidPasswordError')
         }
-        if (error.code === "INVALID_USER"	) {
-          return this._setErrorType('accountDoesNotExistError')
+        if (error.code === "auth/user-not-found"	) {
+          return this._setErrorType('userDoesNotExistError')
         }
-        if (error.code === "USER_DENIED") {
+        if (error.code === "auth/user-disabled"	) {
+          return this._setErrorType('userDisabledError')
+        }
+        if (error.code === "auth/app-not-authorized") {
           return this._setErrorType('applicationNotAuthorizedWithProviderError')
         }
-        if (error.code === "PROVIDER_ERROR") {
-          return this._setErrorType('providerError')
-        }
-        if (error.code === "NETWORK_ERROR") {
+        if (error.code === "auth/network-request-failed") {
           return this._setErrorType('networkError')
         }
         return this._setErrorType('genericError')

@@ -7,9 +7,9 @@
     "signInWithPasswordDescription": "Or sign in with your e-mail address and password",
     "invalidEmailError": "Invalid e-mail address",
     "invalidPasswordError": "Invalid password",
-    "accountDoesNotExistError": "Account does not exist",
+    "userDoesNotExistError": "Account does not exist",
+    "userDisabledError": "User is disabled",
     "applicationNotAuthorizedWithProviderError": "Application not authorized with provider",
-    "providerError": "Provider error",
     "networkError": "Network error",
     "genericError": "Error"
   },
@@ -21,9 +21,9 @@
     "signInWithPasswordDescription": "Of meld je aan met je e-mail adres en wachtwoord",
     "invalidEmailError": "Ongeldig e-mail adres",
     "invalidPasswordError": "Ongeldig wachtwoord",
-    "accountDoesNotExistError": "Account bestaat niet",
+    "userDoesNotExistError": "Gebruikersaccount bestaat niet",
+    "userDisabledError": "Gebruikersaccount is geblokkeerd",
     "applicationNotAuthorizedWithProviderError": "Toepassing niet geauthoriseerd door derde partij",
-    "providerError": "Fout met derde partij",
     "networkError": "Netwerkfout",
     "genericError": "Fout"
   }
