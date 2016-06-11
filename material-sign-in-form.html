@@ -37,8 +37,8 @@ Usage:
       <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
       <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
       <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
-      <p hidden$="{{errorType}}">
-        {{errorType}}
+      <p hidden$="{{errorMessage}}">
+        {{errorMessage}}
       </p>
     </section>
   </template>
@@ -66,7 +66,7 @@ Usage:
           value: false
         },
         /** Both the e-mail and the password are filled in */
-        errorType: {
+        errorMessage: {
           type: String,
           value: null,
           readOnly: true
@@ -113,7 +113,7 @@ Usage:
       * @param {object} options object of the options to fire with the event, becomes event detail.
       */
       signIn: function (provider, options) {
-        this._setErrorType(null)
+        this._setErrorMessage(null)
         return this.fire('sign-in', {
           provider: provider,
           options: options
@@ -127,24 +127,24 @@ Usage:
       */
       error: function (error) {
         if (error.code === "auth/invalid-email") {
-          return this._setErrorType('Invalid e-mail address')
+          return this._setErrorMessage('Invalid e-mail address')
         }
         if (error.code === "auth/wrong-password") {
-          return this._setErrorType('Invalid password')
+          return this._setErrorMessage('Invalid password')
         }
         if (error.code === "auth/user-not-found") {
-          return this._setErrorType('Account does not exist')
+          return this._setErrorMessage('Account does not exist')
         }
         if (error.code === "auth/unauthorized-domain") {
-          return this._setErrorType('Application not authorized with provider')
+          return this._setErrorMessage('Application not authorized with provider')
         }
         if (error.code === "auth/operation-not-allowed") {
-          return this._setErrorType('Provider error')
+          return this._setErrorMessage('Provider error')
         }
         if (error.code === "auth/network-request-failed") {
-          return this._setErrorType('Network error')
+          return this._setErrorMessage('Network error')
         }
-        return this._setErrorType('Error')
+        return this._setErrorMessage('Error')
       },
 
       _emailAndPasswordValid: function (email, emailInvalid, password) {
