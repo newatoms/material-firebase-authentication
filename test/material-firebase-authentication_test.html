@@ -31,6 +31,11 @@
     </test-fixture>
 
     <script>
+      var invalidEmail = 'finnthehuman@example.'
+      var validEmail = 'finnthehuman@example.com'
+      var validPassword = 'secretstuff'
+      var invalidPassword = 'poobrain'
+
       suite('material-firebase-authentication', function() {
 
         test('instantiating the element works', function() {
@@ -94,6 +99,30 @@
           expect(element.user).to.be.null
         });
 
+        test('Attempt sign in with valid details in to the password provider', function (done) {
+          var element = fixture('basic')
+          var signInForm = element.querySelector('material-sign-in-form')
+
+
+          element.addEventListener('signed-in-changed', onSignedInChanged)
+
+          element.querySelector('material-sign-in-form').fire('sign-in', {
+            provider: 'password',
+            options: {
+              email: validEmail,
+              password: validPassword
+            }
+          })
+
+          function onSignedInChanged (event) {
+            element.removeEventListener('signed-in-changed', onSignedInChanged)
+            assert.isTrue(element.signedIn)
+
+            element.$.auth.signOut().then(function () {
+              return done ()
+            })
+          }
+        })
       })
     </script>
   </body>

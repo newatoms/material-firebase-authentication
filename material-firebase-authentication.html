@@ -25,11 +25,12 @@ Usage:
 
     <firebase-auth id="auth"
                    signed-in="{{signedIn}}"
-                   user="{{user}}"></firebase-auth>
+                   user="{{user}}"
+                   on-error="_handleAuthError"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form></material-sign-in-form>
+        <material-sign-in-form on-sign-in="_signInFormSignInHandler"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -60,6 +61,21 @@ Usage:
           notify: true
         },
       },
+
+      _signInFormSignInHandler: function (evt, detail) {
+        if (detail.provider === 'password' && detail.options) {
+          return this.$.auth
+                       .signInWithEmailAndPassword(detail.options.email, detail.options.password)
+        }
+        this.$.auth
+              .signInWithPopup(detail.provider)
+      },
+
+      _handleAuthError: function (evt, error) {
+        this.fire('error', error)
+        this.querySelector('material-sign-in-form').error(error)
+      },
+
       createUser: function (evt, detail) {
           var email = detail.email
           var password = detail.password

@@ -135,10 +135,10 @@ Usage:
         if (error.code === "auth/user-not-found") {
           return this._setErrorMessage('Account does not exist')
         }
-        if (error.code === "auth/unauthorized-domain") {
+        if (error.code === "auth/user-disabled") {
           return this._setErrorMessage('Application not authorized with provider')
         }
-        if (error.code === "auth/operation-not-allowed") {
+        if (error.code === "auth/app-not-authorized") {
           return this._setErrorMessage('Provider error')
         }
         if (error.code === "auth/network-request-failed") {

@@ -10,11 +10,17 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../material-firebase-authentication.html">
+    <link rel="import" href="../../polymerfire/firebase-app.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
   </head>
   <body>
+
+    <firebase-app api-key="AIzaSyBPurb3fZUIbmVqMB-OGKF2L9KDNxAIZkM"
+                  auth-domain="material-firebase-auth.firebaseapp.com"
+                  database-url="https://material-firebase-auth.firebaseio.com"
+                  storage-bucket="material-firebase-auth.appspot.com"></firebase-app>
 
     <div class="vertical-section-container centered">
       <h3>Basic Demo</h3>
