@@ -94,8 +94,8 @@
         test('When I login the errorMessage is unset', function () {
           var element = fixture('basic');
 
-          element._setErrorMessage('invalidEmailError')
-          assert.equal(element.errorMessage, 'invalidEmailError')
+          element._setErrorMessage('error')
+          assert.equal(element.errorMessage, 'error')
 
           element.signIn()
           assert.equal(element.errorMessage, null)
