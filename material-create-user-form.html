@@ -70,6 +70,7 @@ Usage:
 
             _emailInvalid: Boolean,
         },
+        
         /**
         * Non bubbling, to signal the need for a signUp.
         *
@@ -93,13 +94,14 @@ Usage:
                 bubbles: false
             })
         },
+
         /**
         * Set the error message to display
         */
         error: function (error) {
             console.log(error);
             if (error.code === "auth/email-already-in-use")
-                return this._setErrorMessage('Email adress already in use')
+            return this._setErrorMessage('Email adress already in use')
             if (error.code === "auth/invalid-email") {
                 return this._setErrorMessage('Invalid e-mail address')
             }

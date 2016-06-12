@@ -1,110 +1,110 @@
 <!doctype html>
 
 <html>
-<head>
-    <title>material-create-user-form test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <head>
+        <title>material-create-user-form test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../material-create-user-form.html">
-</head>
-<body>
+        <link rel="import" href="../material-create-user-form.html">
+    </head>
+    <body>
 
-    <test-fixture id="basic">
-        <template>
-            <material-create-user-form></material-create-user-form>
-        </template>
-    </test-fixture>
+        <test-fixture id="basic">
+            <template>
+                <material-create-user-form></material-create-user-form>
+            </template>
+        </test-fixture>
 
-    <script>
-    var invalidEmail = 'finnthehuman@example.'
-    var validEmail = 'finnthehuman@example.com'
-    var validPassword = 'secretstuff'
-    var displayName = 'Finn the Human'
+        <script>
+        var invalidEmail = 'finnthehuman@example.'
+        var validEmail = 'finnthehuman@example.com'
+        var validPassword = 'secretstuff'
+        var displayName = 'Finn the Human'
 
-    suite('material-create-user-form', function() {
+        suite('material-create-user-form', function() {
 
-        test('Instantiating the element works.', function() {
-            var element = fixture('basic');
-            assert.equal(element.is, 'material-create-user-form');
-        });
+            test('Instantiating the element works.', function() {
+                var element = fixture('basic');
+                assert.equal(element.is, 'material-create-user-form');
+            });
 
-        test('Sign in button is disabled by default', function () {
-            var element = fixture('basic');
-            assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
-        })
-
-        test('Sign in button is disabled when we put in bogus e-mail address', function () {
-            var element = fixture('basic');
-            element.set('email', invalidEmail)
-            element.set('password', validPassword)
-            element.set('displayName', displayName)
-            assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
-        })
-
-        test('Sign in button is disabled when we put in no password', function () {
-            var element = fixture('basic');
-            element.set('email', validEmail)
-            element.set('password', '')
-            element.set('displayName', displayName)
-            assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
-        })
-
-        test('Sign in button is enabled when we put in good info', function () {
-            var element = fixture('basic');
-            element.set('email', validEmail)
-            element.set('password', validPassword)
-            element.set('displayName', displayName)
-            assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
-        })
-
-        // TODO Test works but new user should be removed after succesful test. -> ? no Firebase yet
-        //     var user = firebase.auth().currentUser;
-        //     user.delete().then(function() {
-        //       User deleted.
-        //     }, function(error) {
-        //       An error happened.
-        //     });
-
-        // test('When I click the Sign up button the signIn event is fired with the \'password\' provider', function (done) {
-        //     var element = fixture('basic');
-        //     element.set('email', validEmail)
-        //     element.set('password', validPassword)
-        //
-        //     element.addEventListener('create-user', function (event) {
-        //         var expectedObject = {
-        //             email: validEmail,
-        //             password: validPassword
-        //         }
-        //         assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-        //         done()
-        //     })
-        //
-        //     element.querySelector('#password-provider paper-button').click()
-        // })
-
-        test('When the error method is used, the right errorMessage is set', function () {
-            var element = fixture('basic');
-
-            element.error({
-                code: "auth/invalid-email"
+            test('Sign in button is disabled by default', function () {
+                var element = fixture('basic');
+                assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
             })
 
-            assert.equal(element.errorMessage, 'Invalid e-mail address')
-        })
+            test('Sign in button is disabled when we put in bogus e-mail address', function () {
+                var element = fixture('basic');
+                element.set('email', invalidEmail)
+                element.set('password', validPassword)
+                element.set('displayName', displayName)
+                assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+            })
 
-        test('When I sign up the errorMessage is unset', function () {
-            var element = fixture('basic');
+            test('Sign in button is disabled when we put in no password', function () {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+                element.set('password', '')
+                element.set('displayName', displayName)
+                assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+            })
 
-            element._setErrorMessage('error')
-            assert.equal(element.errorMessage, 'error')
+            test('Sign in button is enabled when we put in good info', function () {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+                element.set('password', validPassword)
+                element.set('displayName', displayName)
+                assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
+            })
 
-            element.createUserWithPassword()
-            assert.equal(element.errorMessage, null)
-        })
-    });
-    </script>
-</body>
+            // TODO Test works but new user should be removed after succesful test. -> ? no Firebase yet
+            //     var user = firebase.auth().currentUser;
+            //     user.delete().then(function() {
+            //       User deleted.
+            //     }, function(error) {
+            //       An error happened.
+            //     });
+
+            // test('When I click the Sign up button the signIn event is fired with the \'password\' provider', function (done) {
+            //     var element = fixture('basic');
+            //     element.set('email', validEmail)
+            //     element.set('password', validPassword)
+            //
+            //     element.addEventListener('create-user', function (event) {
+            //         var expectedObject = {
+            //             email: validEmail,
+            //             password: validPassword
+            //         }
+            //         assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+            //         done()
+            //     })
+            //
+            //     element.querySelector('#password-provider paper-button').click()
+            // })
+
+            test('When the error method is used, the right errorMessage is set', function () {
+                var element = fixture('basic');
+
+                element.error({
+                    code: "auth/invalid-email"
+                })
+
+                assert.equal(element.errorMessage, 'Invalid e-mail address')
+            })
+
+            test('When I sign up the errorMessage is unset', function () {
+                var element = fixture('basic');
+
+                element._setErrorMessage('error')
+                assert.equal(element.errorMessage, 'error')
+
+                element.createUserWithPassword()
+                assert.equal(element.errorMessage, null)
+            })
+        });
+        </script>
+    </body>
 </html>

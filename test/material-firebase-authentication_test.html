@@ -1,129 +1,129 @@
 <!doctype html>
 
 <html>
-  <head>
-    <title>material-firebase-authentication test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <head>
+        <title>material-firebase-authentication test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../material-firebase-authentication.html">
-    <link rel="import" href="../../polymerfire/firebase-app.html">
-  </head>
-  <body>
+        <link rel="import" href="../material-firebase-authentication.html">
+        <link rel="import" href="../../polymerfire/firebase-app.html">
+    </head>
+    <body>
 
-    <firebase-app api-key="AIzaSyBPurb3fZUIbmVqMB-OGKF2L9KDNxAIZkM"
-                  auth-domain="material-firebase-auth.firebaseapp.com"
-                  database-url="https://material-firebase-auth.firebaseio.com"
-                  storage-bucket="material-firebase-auth.appspot.com"></firebase-app>
+        <firebase-app api-key="AIzaSyBPurb3fZUIbmVqMB-OGKF2L9KDNxAIZkM"
+        auth-domain="material-firebase-auth.firebaseapp.com"
+        database-url="https://material-firebase-auth.firebaseio.com"
+        storage-bucket="material-firebase-auth.appspot.com"></firebase-app>
 
-    <test-fixture id="basic">
-      <template>
-        <material-firebase-authentication></material-firebase-authentication>
-      </template>
-    </test-fixture>
+        <test-fixture id="basic">
+            <template>
+                <material-firebase-authentication></material-firebase-authentication>
+            </template>
+        </test-fixture>
 
-    <test-fixture id="signup-as-page">
-      <template>
-        <material-firebase-authentication page="signup"></material-firebase-authentication>
-      </template>
-    </test-fixture>
+        <test-fixture id="signup-as-page">
+            <template>
+                <material-firebase-authentication page="signup"></material-firebase-authentication>
+            </template>
+        </test-fixture>
 
-    <script>
-      var invalidEmail = 'finnthehuman@example.'
-      var validEmail = 'finnthehuman@example.com'
-      var validPassword = 'secretstuff'
-      var invalidPassword = 'poobrain'
+        <script>
+        var invalidEmail = 'finnthehuman@example.'
+        var validEmail = 'finnthehuman@example.com'
+        var validPassword = 'secretstuff'
+        var invalidPassword = 'poobrain'
 
-      suite('material-firebase-authentication', function() {
+        suite('material-firebase-authentication', function() {
 
-        test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'material-firebase-authentication');
-        });
+            test('instantiating the element works', function() {
+                var element = fixture('basic');
+                assert.equal(element.is, 'material-firebase-authentication');
+            });
 
-        test('the default page is \'signIn\'', function() {
-          var element = fixture('basic');
-          assert.equal(element.page, 'signIn');
+            test('the default page is \'signIn\'', function() {
+                var element = fixture('basic');
+                assert.equal(element.page, 'signIn');
 
-          var pages = element.querySelector('iron-pages')
-          assert.equal(pages.selected, 'signIn')
-        });
+                var pages = element.querySelector('iron-pages')
+                assert.equal(pages.selected, 'signIn')
+            });
 
-        test('\'signIn\' page exists', function () {
-          var element = fixture('basic');
-          var page = element.querySelector('iron-pages section[data-page="signIn"]')
-          expect(page).to.exist
-        });
+            test('\'signIn\' page exists', function () {
+                var element = fixture('basic');
+                var page = element.querySelector('iron-pages section[data-page="signIn"]')
+                expect(page).to.exist
+            });
 
-        test('\'signup\' page exists', function () {
-          var element = fixture('basic');
-          var page = element.querySelector('iron-pages section[data-page="signup"]')
-          expect(page).to.exist
-        });
+            test('\'signup\' page exists', function () {
+                var element = fixture('basic');
+                var page = element.querySelector('iron-pages section[data-page="signup"]')
+                expect(page).to.exist
+            });
 
-        test('Switch from the default page to the page \'signup\'', function() {
-          var element = fixture('basic');
-          var pages = element.querySelector('iron-pages')
+            test('Switch from the default page to the page \'signup\'', function() {
+                var element = fixture('basic');
+                var pages = element.querySelector('iron-pages')
 
-          element.set('page', 'signup')
+                element.set('page', 'signup')
 
-          assert.equal(pages.selected, 'signup')
-        });
+                assert.equal(pages.selected, 'signup')
+            });
 
-        test('Setting page to \'signup\' on the element in the HTML works', function() {
-          var element = fixture('signup-as-page');
-          assert.equal(element.page, 'signup');
+            test('Setting page to \'signup\' on the element in the HTML works', function() {
+                var element = fixture('signup-as-page');
+                assert.equal(element.page, 'signup');
 
-          var pages = element.querySelector('iron-pages')
-          assert.equal(pages.selected, 'signup')
-        });
+                var pages = element.querySelector('iron-pages')
+                assert.equal(pages.selected, 'signup')
+            });
 
-        test('Firebase auth is an instance of \'firebase-auth\'', function() {
-          var element = fixture('basic');
-          var firebaseAuth = element.$.auth
-          assert.equal(firebaseAuth.is, 'firebase-auth');
-        });
+            test('Firebase auth is an instance of \'firebase-auth\'', function() {
+                var element = fixture('basic');
+                var firebaseAuth = element.$.auth
+                assert.equal(firebaseAuth.is, 'firebase-auth');
+            });
 
-        test('Firebase auth gets the app from \'firebase-app\'', function() {
-          var element = fixture('basic');
-          var firebaseAuth = element.$.auth
-          var testApp = document.querySelector('firebase-app')
-          expect(firebaseAuth.app).to.have.a.property('H').to.be.object
-        });
+            test('Firebase auth gets the app from \'firebase-app\'', function() {
+                var element = fixture('basic');
+                var firebaseAuth = element.$.auth
+                var testApp = document.querySelector('firebase-app')
+                expect(firebaseAuth.app).to.have.a.property('H').to.be.object
+            });
 
-        test('We are signed out by default', function () {
-          var element = fixture('basic')
-          assert.equal(element.signedIn, false)
-          expect(element.user).to.be.null
-        });
+            test('We are signed out by default', function () {
+                var element = fixture('basic')
+                assert.equal(element.signedIn, false)
+                expect(element.user).to.be.null
+            });
 
-        test('Attempt sign in with valid details in to the password provider', function (done) {
-          var element = fixture('basic')
-          var signInForm = element.querySelector('material-sign-in-form')
+            test('Attempt sign in with valid details in to the password provider', function (done) {
+                var element = fixture('basic')
+                var signInForm = element.querySelector('material-sign-in-form')
 
 
-          element.addEventListener('signed-in-changed', onSignedInChanged)
+                element.addEventListener('signed-in-changed', onSignedInChanged)
 
-          element.querySelector('material-sign-in-form').fire('sign-in', {
-            provider: 'password',
-            options: {
-              email: validEmail,
-              password: validPassword
-            }
-          })
+                element.querySelector('material-sign-in-form').fire('sign-in', {
+                    provider: 'password',
+                    options: {
+                        email: validEmail,
+                        password: validPassword
+                    }
+                })
 
-          function onSignedInChanged (event) {
-            element.removeEventListener('signed-in-changed', onSignedInChanged)
-            assert.isTrue(element.signedIn)
-
-            element.$.auth.signOut().then(function () {
-              return done ()
+                function onSignedInChanged (event) {
+                    element.removeEventListener('signed-in-changed', onSignedInChanged)
+                    assert.isTrue(element.signedIn)
+                    
+                    element.$.auth.signOut().then(function () {
+                        return done ()
+                    })
+                }
             })
-          }
         })
-      })
-    </script>
-  </body>
+        </script>
+    </body>
 </html>

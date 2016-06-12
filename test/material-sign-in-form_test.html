@@ -1,145 +1,145 @@
 <!doctype html>
 
 <html>
-  <head>
-    <title>material-sign-in-form test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <head>
+        <title>material-sign-in-form test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../material-sign-in-form.html">
-  </head>
-  <body>
+        <link rel="import" href="../material-sign-in-form.html">
+    </head>
+    <body>
 
-    <test-fixture id="basic">
-      <template>
-        <material-sign-in-form></material-sign-in-form>
-      </template>
-    </test-fixture>
+        <test-fixture id="basic">
+            <template>
+                <material-sign-in-form></material-sign-in-form>
+            </template>
+        </test-fixture>
 
-    <script>
-      var invalidEmail = 'finnthehuman@example.'
-      var validEmail = 'finnthehuman@example.com'
-      var validPassword = 'secretstuff'
+        <script>
+        var invalidEmail = 'finnthehuman@example.'
+        var validEmail = 'finnthehuman@example.com'
+        var validPassword = 'secretstuff'
 
-      suite('material-sign-in-form', function() {
+        suite('material-sign-in-form', function() {
 
-        test('Instantiating the element works.', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'material-sign-in-form');
+            test('Instantiating the element works.', function() {
+                var element = fixture('basic');
+                assert.equal(element.is, 'material-sign-in-form');
+            });
+
+            // testProviderButton('twitter')
+            // testProviderButton('google')
+            // testProviderButton('facebook')
+            // testProviderButton('github')
+
+            test('Sign in button is disabled by default', function () {
+                var element = fixture('basic');
+                assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
+            })
+
+            test('Sign in button is disabled when we put in bogus e-mail address', function () {
+                var element = fixture('basic');
+                element.set('email', invalidEmail)
+                element.set('password', validPassword)
+                assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
+            })
+
+            test('Sign in button is disabled when we put in no password', function () {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+                element.set('password', '')
+                assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
+            })
+
+            test('Sign in button is enabled when we put in good info', function () {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+                element.set('password', validPassword)
+                assert.isFalse(element.querySelector('#password-provider paper-button[signInButton]').disabled)
+            })
+
+            test('When I click the Sign In button the signIn event is fired with the \'password\' provider', function (done) {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+                element.set('password', validPassword)
+
+                element.addEventListener('sign-in', function (event) {
+                    var expectedObject = {
+                        provider: 'password',
+                        options: {
+                            email: validEmail,
+                            password: validPassword
+                        }
+                    }
+                    assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+                    done()
+                })
+
+                element.querySelector('#password-provider paper-button[signInButton]').click()
+            })
+
+            test('When I click the Forgot password button the request-reset-password event is fired with email as payload', function (done) {
+                var element = fixture('basic');
+                element.set('email', validEmail)
+
+                element.addEventListener('request-reset-password', function (event) {
+                    var expectedObject = {
+                        email: validEmail
+                    }
+                    assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+                    done()
+                })
+
+                element.querySelector('#password-provider paper-button').click()
+            })
+
+            test('When the error method is used, the right errorMessage is set', function () {
+                var element = fixture('basic');
+
+                element.error({
+                    code: "auth/invalid-email"
+                })
+
+                assert.equal(element.errorMessage, 'Invalid e-mail address')
+            })
+
+            test('When I login the errorMessage is unset', function () {
+                var element = fixture('basic');
+
+                element._setErrorMessage('error')
+                assert.equal(element.errorMessage, 'error')
+
+                element.signIn()
+                assert.equal(element.errorMessage, null)
+            })
+
         });
 
-        // testProviderButton('twitter')
-        // testProviderButton('google')
-        // testProviderButton('facebook')
-        // testProviderButton('github')
+        function testProviderButton (provider) {
+            var testTitle = 'When I click the ' + provider + ' button, the signIn event is fired with the \''+ provider + '\' provider'
 
-        test('Sign in button is disabled by default', function () {
-          var element = fixture('basic');
-          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
-        })
+            return test(testTitle, function (done) {
+                var element = fixture('basic');
+                element.addEventListener('sign-in', function (event) {
+                    var expectedObject = {
+                        provider: provider
+                    }
+                    assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+                    done()
+                })
 
-        test('Sign in button is disabled when we put in bogus e-mail address', function () {
-          var element = fixture('basic');
-          element.set('email', invalidEmail)
-          element.set('password', validPassword)
-          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
-        })
+                var buttons = element.querySelectorAll('#oauth-providers paper-button')
 
-        test('Sign in button is disabled when we put in no password', function () {
-          var element = fixture('basic');
-          element.set('email', validEmail)
-          element.set('password', '')
-          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
-        })
-
-        test('Sign in button is enabled when we put in good info', function () {
-          var element = fixture('basic');
-          element.set('email', validEmail)
-          element.set('password', validPassword)
-          assert.isFalse(element.querySelector('#password-provider paper-button[signInButton]').disabled)
-        })
-
-        test('When I click the Sign In button the signIn event is fired with the \'password\' provider', function (done) {
-          var element = fixture('basic');
-          element.set('email', validEmail)
-          element.set('password', validPassword)
-
-          element.addEventListener('sign-in', function (event) {
-            var expectedObject = {
-              provider: 'password',
-              options: {
-                email: validEmail,
-                password: validPassword
-              }
-            }
-            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-            done()
-          })
-
-          element.querySelector('#password-provider paper-button[signInButton]').click()
-        })
-
-        test('When I click the Forgot password button the request-reset-password event is fired with email as payload', function (done) {
-          var element = fixture('basic');
-          element.set('email', validEmail)
-
-          element.addEventListener('request-reset-password', function (event) {
-            var expectedObject = {
-                email: validEmail
-            }
-            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-            done()
-          })
-
-          element.querySelector('#password-provider paper-button').click()
-        })
-
-        test('When the error method is used, the right errorMessage is set', function () {
-          var element = fixture('basic');
-
-          element.error({
-            code: "auth/invalid-email"
-          })
-
-          assert.equal(element.errorMessage, 'Invalid e-mail address')
-        })
-
-        test('When I login the errorMessage is unset', function () {
-          var element = fixture('basic');
-
-          element._setErrorMessage('error')
-          assert.equal(element.errorMessage, 'error')
-
-          element.signIn()
-          assert.equal(element.errorMessage, null)
-        })
-
-      });
-
-      function testProviderButton (provider) {
-        var testTitle = 'When I click the ' + provider + ' button, the signIn event is fired with the \''+ provider + '\' provider'
-
-        return test(testTitle, function (done) {
-          var element = fixture('basic');
-          element.addEventListener('sign-in', function (event) {
-            var expectedObject = {
-              provider: provider
-            }
-            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-            done()
-          })
-
-          var buttons = element.querySelectorAll('#oauth-providers paper-button')
-
-          for (var i = 0; i < buttons.length; i++) {
-            if (buttons[i].innerHTML.toLowerCase() === provider.toLowerCase()) {
-              buttons[i].click()
-            }
-          }
-        })
-      }
-    </script>
-  </body>
+                for (var i = 0; i < buttons.length; i++) {
+                    if (buttons[i].innerHTML.toLowerCase() === provider.toLowerCase()) {
+                        buttons[i].click()
+                    }
+                }
+            })
+        }
+        </script>
+    </body>
 </html>
