@@ -30,35 +30,35 @@
           assert.equal(element.is, 'material-sign-in-form');
         });
 
-        testProviderButton('twitter')
-        testProviderButton('google')
-        testProviderButton('facebook')
-        testProviderButton('github')
+        // testProviderButton('twitter')
+        // testProviderButton('google')
+        // testProviderButton('facebook')
+        // testProviderButton('github')
 
         test('Sign in button is disabled by default', function () {
           var element = fixture('basic');
-          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
         })
 
         test('Sign in button is disabled when we put in bogus e-mail address', function () {
           var element = fixture('basic');
           element.set('email', invalidEmail)
           element.set('password', validPassword)
-          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
         })
 
         test('Sign in button is disabled when we put in no password', function () {
           var element = fixture('basic');
           element.set('email', validEmail)
           element.set('password', '')
-          assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
+          assert.isTrue(element.querySelector('#password-provider paper-button[signInButton]').disabled)
         })
 
         test('Sign in button is enabled when we put in good info', function () {
           var element = fixture('basic');
           element.set('email', validEmail)
           element.set('password', validPassword)
-          assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
+          assert.isFalse(element.querySelector('#password-provider paper-button[signInButton]').disabled)
         })
 
         test('When I click the Sign In button the signIn event is fired with the \'password\' provider', function (done) {
@@ -73,6 +73,21 @@
                 email: validEmail,
                 password: validPassword
               }
+            }
+            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+            done()
+          })
+
+          element.querySelector('#password-provider paper-button[signInButton]').click()
+        })
+
+        test('When I click the Forgot password button the request-reset-password event is fired with email as payload', function (done) {
+          var element = fixture('basic');
+          element.set('email', validEmail)
+
+          element.addEventListener('request-reset-password', function (event) {
+            var expectedObject = {
+                email: validEmail
             }
             assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
             done()

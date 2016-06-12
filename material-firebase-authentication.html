@@ -1,5 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="material-sign-in-form.html">
 <link rel="import" href="material-create-user-form.html">
@@ -26,15 +28,20 @@ Usage:
     <firebase-auth id="auth"
                    signed-in="{{signedIn}}"
                    user="{{user}}"
-                   on-error="_handleAuthError"></firebase-auth>
+                   on-error="_handleAuthError"
+                   app="{{app}}"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form on-sign-in="_signInFormSignInHandler"></material-sign-in-form>
+        <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
         <material-create-user-form on-create-user="_createUser"></material-create-user-form>
+      </section>
+      <section data-page="signout">
+        <h2>Sign out</h2>
+        <paper-button signOutButton on-tap="signOut">Sign out</paper-button>
       </section>
     </iron-pages>
   </template>
@@ -60,6 +67,20 @@ Usage:
           type: Object,
           notify: true
         },
+        /** The firebase app currently functioning in firebase-auth  */
+        app: {
+            type: Object,
+            notify: true
+        }
+      },
+
+      _requestResetPassword: function (evt, detail) {
+        var auth = this.app.auth();
+        auth.sendPasswordResetEmail(detail.email)
+      },
+
+      signOut: function (evt, detail) {
+        this.$.auth.signOut()
       },
 
       _signInFormSignInHandler: function (evt, detail) {
