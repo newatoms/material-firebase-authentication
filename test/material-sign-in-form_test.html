@@ -82,6 +82,21 @@
           element.querySelector('#password-provider paper-button[signInButton]').click()
         })
 
+        test('When I click the Forgot password button the request-reset-password event is fired with email as payload', function (done) {
+          var element = fixture('basic');
+          element.set('email', validEmail)
+
+          element.addEventListener('request-reset-password', function (event) {
+            var expectedObject = {
+                email: validEmail
+            }
+            assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+            done()
+          })
+
+          element.querySelector('#password-provider paper-button').click()
+        })
+
         test('When the error method is used, the right errorMessage is set', function () {
           var element = fixture('basic');
 
@@ -91,6 +106,7 @@
 
           assert.equal(element.errorMessage, 'Invalid e-mail address')
         })
+
 
         test('When I login the errorType is unset', function () {
           var element = fixture('basic');
