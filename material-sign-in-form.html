@@ -36,7 +36,7 @@ Usage:
     <section id="password-provider">
       <p>Or sign in with your e-mail address and password</p>
       <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
-      <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
+      <paper-input label="Password" value="{{password}}" type="password" auto-validate><paper-button suffix raised on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
       <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
       <p hidden$="{{!errorMessage}}">
         {{errorMessage}}
@@ -76,10 +76,17 @@ Usage:
         _emailInvalid: Boolean,
       },
 
+
+      requestResetPassword: function () {
+          this._setErrorMessage(null)
+          if (this.email && !this._emailInvalid) return this.fire('request-reset-password', {email: this.email})
+          return this._setErrorMessage('Please enter a valid e-mail address')
+      },
+
       /** Fire the `signIn` event with provider `github` */
       signInWithGithub: function () {
-        var github = new firebase.auth.GithubAuthProvider()
-        return this.signIn(github)
+          var github = new firebase.auth.GithubAuthProvider()
+          return this.signIn(github)
       },
       /** Fire the `signIn` event with provider `google` */
       signInWithGoogle: function () {

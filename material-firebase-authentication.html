@@ -2,6 +2,8 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="material-sign-in-form.html">
+<link rel="import" href="../polymerfire/firebase.html">
+<link rel="import" href="../polymerfire/firebase-common-behavior.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -25,11 +27,12 @@ Usage:
     <firebase-auth id="auth"
                    signed-in="{{signedIn}}"
                    user="{{user}}"
-                   on-error="_handleAuthError"></firebase-auth>
+                   on-error="_handleAuthError"
+                   app="{{app}}"></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form on-sign-in="_signInFormSignInHandler"></material-sign-in-form>
+        <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -58,6 +61,16 @@ Usage:
           type: Object,
           notify: true
         },
+        /** The firebase app currently functioning in firebase-auth  */
+        app: {
+            type: Object,
+            notify: true
+        }
+      },
+
+      _requestResetPassword: function (evt, detail) {
+        var auth = this.app.auth();
+        auth.sendPasswordResetEmail(detail.email)
       },
 
       _signInFormSignInHandler: function (evt, detail) {
