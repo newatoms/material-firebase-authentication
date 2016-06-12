@@ -2,7 +2,7 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="material-sign-in-form.html">
-<link rel="import" href="material-create-account-form.html">
+<link rel="import" href="material-create-user-form.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -13,7 +13,7 @@ Usage:
 
     <material-firebase-authentication page="signup"></material-firebase-authentication>
 
-@demo demo/material-firebase-authentication_test.html
+@demo demo/material-firebase-authentication.html
 -->
 <dom-module id="material-firebase-authentication">
   <template>
@@ -29,11 +29,11 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form ></material-sign-in-form>
+        <material-sign-in-form></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
-        <material-create-account-form></material-create-account-form>
+        <material-create-user-form on-create-user="createUser"></material-create-user-form>
       </section>
     </iron-pages>
   </template>
@@ -60,6 +60,11 @@ Usage:
           notify: true
         },
       },
+      createUser: function (evt, detail) {
+          var email = detail.email
+          var password = detail.password
+          this.$.auth.createUserWithEmailAndPassword(email, password)
+      }
     });
   </script>
 </dom-module>
