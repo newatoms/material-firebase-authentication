@@ -22,6 +22,7 @@
     var invalidEmail = 'finnthehuman@example.'
     var validEmail = 'finnthehuman@example.com'
     var validPassword = 'secretstuff'
+    var displayName = 'Finn the Human'
 
     suite('material-create-user-form', function() {
 
@@ -39,6 +40,7 @@
             var element = fixture('basic');
             element.set('email', invalidEmail)
             element.set('password', validPassword)
+            element.set('displayName', displayName)
             assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
         })
 
@@ -46,6 +48,7 @@
             var element = fixture('basic');
             element.set('email', validEmail)
             element.set('password', '')
+            element.set('displayName', displayName)
             assert.isTrue(element.querySelector('#password-provider paper-button').disabled)
         })
 
@@ -53,6 +56,7 @@
             var element = fixture('basic');
             element.set('email', validEmail)
             element.set('password', validPassword)
+            element.set('displayName', displayName)
             assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
         })
 
