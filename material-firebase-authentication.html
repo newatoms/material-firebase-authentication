@@ -1,5 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="material-sign-in-form.html">
 
@@ -34,6 +36,10 @@ Usage:
       <section data-page="signup">
         <h2>Sign Up</h2>
       </section>
+      <section data-page="signout">
+        <h2>Sign out</h2>
+        <paper-button signOutButton on-tap="signOut">Sign out</paper-button>
+      </section>
     </iron-pages>
   </template>
   <script>
@@ -58,6 +64,10 @@ Usage:
           type: Object,
           notify: true
         },
+      },
+
+      signOut: function (evt, detail) {
+        this.$.auth.signOut()
       },
 
       _signInFormSignInHandler: function (evt, detail) {
