@@ -11,7 +11,7 @@ The element fires a `login` event when the user decides to login.
 
 Usage:
 
-    <material-sign-in-form password-provider-button-label="Log in!"></material-sign-in-form>
+<material-sign-in-form password-provider-button-label="Log in!"></material-sign-in-form>
 
 @demo demo/material-sign-in-form.html
 -->
@@ -37,7 +37,7 @@ Usage:
       <p>Or sign in with your e-mail address and password</p>
       <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
       <paper-input label="Password" value="{{password}}" type="password" auto-validate><paper-button suffix raised on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
-      <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
+      <paper-button signInButton on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
       <p hidden$="{{!errorMessage}}">
         {{errorMessage}}
       </p>
