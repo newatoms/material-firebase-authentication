@@ -56,22 +56,30 @@
             assert.isFalse(element.querySelector('#password-provider paper-button').disabled)
         })
 
-        test('When I click the Sign In button the signIn event is fired with the \'password\' provider', function (done) {
-            var element = fixture('basic');
-            element.set('email', validEmail)
-            element.set('password', validPassword)
+        // TODO Test works but new user should be removed after succesful test. -> ? no Firebase yet
+        //     var user = firebase.auth().currentUser;
+        //     user.delete().then(function() {
+        //       User deleted.
+        //     }, function(error) {
+        //       An error happened.
+        //     });
 
-            element.addEventListener('sign-up', function (event) {
-                var expectedObject = {
-                    email: validEmail,
-                    password: validPassword
-                }
-                assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
-                done()
-            })
-
-            element.querySelector('#password-provider paper-button').click()
-        })
+        // test('When I click the Sign up button the signIn event is fired with the \'password\' provider', function (done) {
+        //     var element = fixture('basic');
+        //     element.set('email', validEmail)
+        //     element.set('password', validPassword)
+        //
+        //     element.addEventListener('create-user', function (event) {
+        //         var expectedObject = {
+        //             email: validEmail,
+        //             password: validPassword
+        //         }
+        //         assert.equal(JSON.stringify(event.detail), JSON.stringify(expectedObject))
+        //         done()
+        //     })
+        //
+        //     element.querySelector('#password-provider paper-button').click()
+        // })
 
         test('When the error method is used, the right errorMessage is set', function () {
             var element = fixture('basic');
@@ -89,7 +97,7 @@
             element._setErrorMessage('error')
             assert.equal(element.errorMessage, 'error')
 
-            element.signUpWithPassword()
+            element.createUserWithPassword()
             assert.equal(element.errorMessage, null)
         })
     });
