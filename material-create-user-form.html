@@ -21,6 +21,8 @@ Usage:
 
         <section id="password-provider">
             <p>Sign up with your e-mail address and password</p>
+            <paper-input label="Name" value="{{displayName}}"></paper-input>
+
             <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
             <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
             <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Create account</paper-button>
@@ -41,6 +43,12 @@ Usage:
                 notify: true,
                 value: ''
             },
+            /** Display name for the new account **/
+            displayName: {
+                type: String,
+                notify: true,
+                value: ''
+            },
             /** Password for new account **/
             password: {
                 type: String,
@@ -50,7 +58,7 @@ Usage:
             /** Both the e-mail and the password are filled in */
             inputsValid: {
                 type: Boolean,
-                computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
+                computed: '_emailAndPasswordValid(email, displayName, _emailInvalid, password)',
                 value: false
             },
             /** error m */
@@ -74,11 +82,13 @@ Usage:
         createUserWithPassword: function () {
             var email = this.email
             var password = this.password
+            var displayName = this.displayName
 
             this._setErrorMessage(null)
             return this.fire('create-user', {
                 email: email,
-                password: password
+                password: password,
+                displayName: displayName
             }, {
                 bubbles: false
             })
@@ -96,8 +106,8 @@ Usage:
             return this._setErrorMessage('Error')
         },
 
-        _emailAndPasswordValid: function (email, emailInvalid, password) {
-            return (email !== '' && password !== '' && emailInvalid === false)
+        _emailAndPasswordValid: function (email, displayName, emailInvalid, password) {
+            return (email !== '' && displayName !== '' && password !== '' && emailInvalid === false)
         },
     });
     </script>

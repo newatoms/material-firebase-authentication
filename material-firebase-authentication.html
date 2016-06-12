@@ -100,9 +100,17 @@ Usage:
       },
 
       _createUser: function (evt, detail) {
+          var self = this
           var email = detail.email
           var password = detail.password
-          this.$.auth.createUserWithEmailAndPassword(email, password)
+          var displayName = detail.displayName
+          this.$.auth.createUserWithEmailAndPassword(email, password).then(self._updateProfileWithDisplayName(displayName))
+      },
+      _updateProfileWithDisplayName: function (displayName) {
+          var self = this
+          // set displayName with proper callback function which waits until this.user is loaded.
+          setTimeout(function(){ self.user.updateProfile({displayName: displayName}) }, 2000);
+
       }
     });
   </script>
