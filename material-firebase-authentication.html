@@ -4,8 +4,7 @@
 
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="material-sign-in-form.html">
-<link rel="import" href="../polymerfire/firebase.html">
-<link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="material-create-user-form.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -38,6 +37,7 @@ Usage:
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
+        <material-create-user-form on-create-user="_createUser"></material-create-user-form>
       </section>
       <section data-page="signout">
         <h2>Sign out</h2>
@@ -93,9 +93,17 @@ Usage:
       },
 
       _handleAuthError: function (evt, error) {
+        console.error(error)
         this.fire('error', error)
         this.querySelector('material-sign-in-form').error(error)
+        this.querySelector('material-create-user-form').error(error)
       },
+
+      _createUser: function (evt, detail) {
+          var email = detail.email
+          var password = detail.password
+          this.$.auth.createUserWithEmailAndPassword(email, password)
+      }
     });
   </script>
 </dom-module>
