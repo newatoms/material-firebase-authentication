@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 <link rel="import" href="material-sign-in-form.html">
 
 <!--
@@ -13,7 +12,7 @@ Usage:
 
     <material-firebase-authentication page="signup"></material-firebase-authentication>
 
-@demo demo/index.html
+@demo demo/material-firebase-authentication.html
 -->
 <dom-module id="material-firebase-authentication">
   <template>
@@ -30,9 +29,7 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signIn">
-        <material-sign-in-form language="[[language]]"
-                               resources="[[resources]]"
-                               on-sign-in="_signInFormSignInHandler"></material-sign-in-form>
+        <material-sign-in-form on-sign-in="_signInFormSignInHandler"></material-sign-in-form>
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
@@ -43,10 +40,6 @@ Usage:
     Polymer({
 
       is: 'material-firebase-authentication',
-
-      behaviors: [
-        Polymer.AppLocalizeBehavior
-      ],
 
       properties: {
         /** The current page to show, valid values are: `signIn`, `signup` */
@@ -65,11 +58,6 @@ Usage:
           type: Object,
           notify: true
         },
-        /** The language to use for locale string */
-        language: {
-          type: String,
-          value: 'en'
-        }
       },
 
       _signInFormSignInHandler: function (evt, detail) {
@@ -84,10 +72,6 @@ Usage:
       _handleAuthError: function (evt, error) {
         this.fire('error', error)
         this.querySelector('material-sign-in-form').error(error)
-      },
-
-      attached: function() {
-        this.loadResources(this.resolveUrl('locales.json'));
       },
     });
   </script>
