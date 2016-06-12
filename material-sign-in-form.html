@@ -38,7 +38,7 @@ Usage:
     <section id="password-provider">
       <p>Or sign in with your e-mail address and password</p>
       <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
-      <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix raised on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
+      <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
       <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
       <p hidden$="{{!errorMessage}}">
         {{errorMessage}}
