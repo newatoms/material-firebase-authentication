@@ -148,6 +148,9 @@ Usage:
         if (error.code === "auth/network-request-failed") {
           return this._setErrorMessage('Network error')
         }
+        if (error.code === "auth/weak-password") {
+          return this._setErrorMessage('Please provide a stronger password')
+        }
         return this._setErrorMessage('Error')
       },
 
