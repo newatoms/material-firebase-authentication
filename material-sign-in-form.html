@@ -37,9 +37,9 @@ Usage:
 
     <section id="password-provider">
       <p>Or sign in with your e-mail address and password</p>
-      <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
-      <paper-input label="Password" value="{{password}}" type="password" auto-validate><paper-button suffix raised on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
-      <paper-button signInButton on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
+      <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+      <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix raised on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
+      <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
       <p hidden$="{{!errorMessage}}">
         {{errorMessage}}
       </p>
@@ -165,6 +165,12 @@ Usage:
 
       _emailAndPasswordValid: function (email, emailInvalid, password) {
         return (email !== '' && password !== '' && emailInvalid === false)
+      },
+
+      _keyPressed: function(e) {
+          if (e.keyCode == 13 && !e.shiftKey && this.inputsValid === true) {
+              this.signInWithPassword();
+          }
       },
     });
   </script>
