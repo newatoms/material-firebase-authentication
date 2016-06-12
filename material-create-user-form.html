@@ -7,94 +7,98 @@ A form for creating a firebase authentication account and displaying input eleme
 
 Usage:
 
-    <material-create-user-form></material-create-user-form>
+<material-create-user-form></material-create-user-form>
 
 @demo demo/material-create-user-form.html
 -->
 <dom-module id="material-create-user-form">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-
-    <section id="password-provider">
-      <p>Sign up with your e-mail address and password</p>
-      <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
-      <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
-      <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
-      <p hidden$="{{errorMessage}}">
-        {{errorMessage}}
-      </p>
-    </section>
-  </template>
-  <script>
-    Polymer({
-      is: 'material-create-user-form',
-
-      properties: {
-          /** E-mail address for new account **/
-          email: {
-            type: String,
-            notify: true,
-            value: ''
-          },
-          /** Password for new account **/
-          password: {
-            type: String,
-            notify: true,
-            value: ''
-          },
-          /** Both the e-mail and the password are filled in */
-          inputsValid: {
-            type: Boolean,
-            computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
-            value: false
-          },
-          /** error m */
-          errorMessage: {
-            type: String,
-            value: null,
-            readOnly: true
-          },
-
-          _emailInvalid: Boolean,
-      },
-      /**
-      * Non bubbling, to signal the need for a signUp.
-      *
-      * @event signUp
-      */
-
-      /**
-      * Fire the `signUp` event
-      */
-      createUserWithPassword: function () {
-        var email = this.email
-        var password = this.password
-
-        this._setErrorMessage(null)
-        return this.fire('create-user', {
-          email: email,
-          password: password
-        }, {
-          bubbles: false
-        })
-      },
-      /**
-      * Set the error message to display
-      */
-      error: function (error) {
-        if (error.code === "auth/invalid-email") {
-          return this._setErrorMessage('Invalid e-mail address')
+    <template>
+        <style>
+        :host {
+            display: block;
         }
-        return this._setErrorMessage('Error')
-      },
+        </style>
 
-      _emailAndPasswordValid: function (email, emailInvalid, password) {
-        return (email !== '' && password !== '' && emailInvalid === false)
-      },
+        <section id="password-provider">
+            <p>Sign up with your e-mail address and password</p>
+            <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
+            <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
+            <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Create account</paper-button>
+            <p hidden$="{{!errorMessage}}">
+                {{errorMessage}}
+            </p>
+        </section>
+
+    </template>
+    <script>
+    Polymer({
+        is: 'material-create-user-form',
+
+        properties: {
+            /** E-mail address for new account **/
+            email: {
+                type: String,
+                notify: true,
+                value: ''
+            },
+            /** Password for new account **/
+            password: {
+                type: String,
+                notify: true,
+                value: ''
+            },
+            /** Both the e-mail and the password are filled in */
+            inputsValid: {
+                type: Boolean,
+                computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
+                value: false
+            },
+            /** error m */
+            errorMessage: {
+                type: String,
+                value: null,
+                readOnly: true
+            },
+
+            _emailInvalid: Boolean,
+        },
+        /**
+        * Non bubbling, to signal the need for a signUp.
+        *
+        * @event signUp
+        */
+
+        /**
+        * Fire the `signUp` event
+        */
+        createUserWithPassword: function () {
+            var email = this.email
+            var password = this.password
+
+            this._setErrorMessage(null)
+            return this.fire('create-user', {
+                email: email,
+                password: password
+            }, {
+                bubbles: false
+            })
+        },
+        /**
+        * Set the error message to display
+        */
+        error: function (error) {
+            console.log(error);
+            if (error.code === "auth/email-already-in-use")
+                return this._setErrorMessage('Email adress already in use')
+            if (error.code === "auth/invalid-email") {
+                return this._setErrorMessage('Invalid e-mail address')
+            }
+            return this._setErrorMessage('Error')
+        },
+
+        _emailAndPasswordValid: function (email, emailInvalid, password) {
+            return (email !== '' && password !== '' && emailInvalid === false)
+        },
     });
-  </script>
+    </script>
 </dom-module>
