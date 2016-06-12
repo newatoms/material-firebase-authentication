@@ -37,7 +37,7 @@ Usage:
       <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
       <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
       <paper-button on-tap="signInWithPassword" disabled="{{!inputsValid}}">Sign in</paper-button>
-      <p hidden$="{{errorMessage}}">
+      <p hidden$="{{!errorMessage}}">
         {{errorMessage}}
       </p>
     </section>
