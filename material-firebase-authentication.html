@@ -34,7 +34,7 @@ Usage:
       </section>
       <section data-page="signup">
         <h2>Sign Up</h2>
-        <material-create-user-form on-create-user="createUser"></material-create-user-form>
+        <material-create-user-form on-create-user="_createUser"></material-create-user-form>
       </section>
     </iron-pages>
   </template>
@@ -72,11 +72,13 @@ Usage:
       },
 
       _handleAuthError: function (evt, error) {
+        console.error(error)
         this.fire('error', error)
         this.querySelector('material-sign-in-form').error(error)
+        this.querySelector('material-create-user-form').error(error)
       },
 
-      createUser: function (evt, detail) {
+      _createUser: function (evt, detail) {
           var email = detail.email
           var password = detail.password
           this.$.auth.createUserWithEmailAndPassword(email, password)
