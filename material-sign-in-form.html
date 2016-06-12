@@ -2,7 +2,8 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
-
+<link rel="import" href="../polymerfire/firebase.html">
+<link rel="import" href="../polymerfire/firebase-common-behavior.html">
 <!--
 A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider.
 
@@ -77,19 +78,23 @@ Usage:
 
       /** Fire the `signIn` event with provider `github` */
       signInWithGithub: function () {
-        return this.signIn('github')
+        var github = new firebase.auth.GithubAuthProvider()
+        return this.signIn(github)
       },
       /** Fire the `signIn` event with provider `google` */
       signInWithGoogle: function () {
-        return this.signIn('google')
+        var google = new firebase.auth.GoogleAuthProvider()
+        return this.signIn(google)
       },
       /** Fire the `signIn` event with provider `facebook` */
       signInWithFacebook: function () {
-        return this.signIn('facebook')
+        var facebook = new firebase.auth.FacebookAuthProvider()
+        return this.signIn(facebook)
       },
       /** Fire the `signIn` event with provider `twitter` */
       signInWithTwitter: function () {
-        return this.signIn('twitter')
+        var twitter = new firebase.auth.TwitterAuthProvider()
+        return this.signIn(twitter)
       },
 
       /** Fire the `signIn` event with provider `password` and the email and password in the options */
@@ -121,7 +126,6 @@ Usage:
           bubbles: false
         })
       },
-
       /**
       * Set the error message to display
       */
