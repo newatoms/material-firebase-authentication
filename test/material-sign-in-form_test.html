@@ -24,6 +24,12 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="hideExternalAuthentication">
+      <template>
+        <material-sign-in-form no-google-authentication no-github-authentication no-twitter-authentication no-facebook-authentication></material-sign-in-form>
+      </template>
+    </test-fixture>
+
     <script>
     var invalidEmail = 'finnthehuman@example.'
     var validEmail = 'finnthehuman@example.com'
@@ -157,6 +163,29 @@
       assert.equal(attributeElement.noExternalAuthentication, true);
       var attributeElementButtons = attributeElement.querySelectorAll('#oauth-providers paper-button')
       typeof attributeElementButtons == 'undefined'
+    })
+
+    test('Assigning attributes that hide the external authentication provider options as a parent will set paper-buttons to hidden', function () {
+      var noAttributeElement = fixture('basic');
+      assert.equal(noAttributeElement.noExternalAuthentication, false);
+      var noAttributeElementButtons = noAttributeElement.querySelectorAll('#oauth-providers paper-button')
+
+
+      for (var i = 0; i < noAttributeElementButtons.length; ++i) {
+        var item = noAttributeElementButtons[i];
+        assert.equal(item.hidden, false)
+      }
+
+
+      var attributeElement = fixture('noExternalAuthentication');
+      assert.equal(attributeElement.noExternalAuthentication, true);
+      var attributeElementButtons = attributeElement.querySelectorAll('#oauth-providers paper-button')
+
+      for (var i = 0; i < attributeElementButtons.length; ++i) {
+        var item = attributeElementButtons[i];
+        assert.equal(item.hidden, true)
+      }
+
     })
     </script>
   </body>
