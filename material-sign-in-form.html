@@ -33,9 +33,17 @@ Usage:
           text-align:center;
         }
 
-        #google-button {
+        #facebook-button {
           background-color: var(--paper-red-400);
           margin-top:30px;
+        }
+
+        #twitter-button {
+          background-color: var(--paper-grey-900);
+        }
+
+        #google-button {
+          background-color: var(--paper-red-400);
         }
 
         #github-button {
@@ -85,9 +93,13 @@ Usage:
               <h1>Howdy! Login below</h1>
             </p>
 
+            <paper-button id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-button>
+
             <paper-button id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-button>
 
             <paper-button id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-button>
+
+            <paper-button id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-button>
 
         </section>
 
