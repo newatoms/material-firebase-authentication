@@ -18,6 +18,12 @@
             </template>
         </test-fixture>
 
+        <test-fixture id="noExternalAuthentication">
+            <template>
+                <material-sign-in-form no-external-authentication></material-sign-in-form>
+            </template>
+        </test-fixture>
+
         <script>
         var invalidEmail = 'finnthehuman@example.'
         var validEmail = 'finnthehuman@example.com'
@@ -140,6 +146,18 @@
                 }
             })
         }
+
+        test('Assigning attribute noExternalAuthentication as a parent will set property (boolean) noExternalAuthentication to true', function () {
+            var noAttributeElement = fixture('basic');
+            assert.equal(noAttributeElement.noExternalAuthentication, false);
+            var noAttributeElementButtons = noAttributeElement.querySelectorAll('#oauth-providers paper-button')
+            typeof noAttributeElementButtons != 'undefined'
+
+            var attributeElement = fixture('noExternalAuthentication');
+            assert.equal(attributeElement.noExternalAuthentication, true);
+            var attributeElementButtons = attributeElement.querySelectorAll('#oauth-providers paper-button')
+            typeof attributeElementButtons == 'undefined'
+        })
         </script>
     </body>
 </html>
