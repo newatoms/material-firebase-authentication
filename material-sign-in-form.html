@@ -24,18 +24,17 @@ Usage:
       display: block;
     }
     </style>
-
-    <section id="oauth-providers">
-      <p>Sign in using a third party account</p>
-      <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
-        <ul>
-          <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
-          <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
-          <li><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
-          <li><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
-        </ul>
-      </template>
-    </section>
+    <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
+      <section id="oauth-providers">
+        <p>Sign in using a third party account</p>
+          <ul>
+            <li hidden="{{noAuthViaGithub}}"><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
+            <li hidden="{{noAuthViaGoogle}}"><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
+            <li hidden="{{noAuthViaFacebook}}"><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
+            <li hidden="{{noAuthViaTwitter}}"><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
+          </ul>
+      </section>
+    </template>
 
     <section id="password-provider">
       <p>Or sign in with your e-mail address and password</p>
@@ -81,7 +80,27 @@ Usage:
         type: Boolean,
         value: false
       },
-      
+      /** Enable the user to login/create an account via Github  */
+      noAuthViaGithub: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Google  */
+      noAuthViaGoogle: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Facebook  */
+      noAuthViaFacebook: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Twitter  */
+      noAuthViaTwitter: {
+        type: Boolean,
+        value: false
+      },
+
       _emailInvalid: Boolean,
     },
 
