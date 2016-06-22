@@ -34,37 +34,40 @@ Usage:
           text-align:center;
         }
 
+        #login-button {
+          margin-top:20px;
+          width:100%;
+          background-color: var(--paper-blue-500);
+        }
+
         #oauth-providers {
           margin-top:30px;
           @apply(--layout-horizontal);
           @apply(--layout-center-justified);
         }
 
-
         paper-icon-button {
           border:1px solid var(--paper-grey-200);
           margin:0px 5px;
-          width:60px;
-          height:100%;
-        }
-
-        #login-button {
-          margin-top:20px;
-          width:100%;
-          background-color: var(--paper-blue-500);          
+          @apply(--layout-flex);
+          height:50px;
+          border-radius: 3px;
         }
 
         h1 {
           text-align:center;
-          font-size: 30px;
-          font-weight:normal;
+          font-size: 20px;
+          font-weight:lighter;
           margin:0px;
         }
 
         #login-division {
           @apply(--layout-horizontal);
           margin-top:50px;
-          margin-bottom:15px;
+        }
+
+        gold-email-input {
+          margin-top:30px;
         }
 
         #forgot-password {
@@ -83,8 +86,6 @@ Usage:
           margin:6px 10px;
         }
 
-
-
         </style>
 
 
@@ -94,13 +95,13 @@ Usage:
 
         <section id="oauth-providers">
 
-            <paper-icon-button src="/images/icon-facebook.png" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
+            <paper-icon-button src="/images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
 
-            <paper-icon-button src="/images/icon-google.png" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
+            <paper-icon-button src="/images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
 
-            <paper-icon-button src="/images/icon-github.png" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
+            <paper-icon-button src="/images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
 
-            <paper-icon-button src="/images/icon-twitter.png" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
+            <paper-icon-button src="/images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
 
         </section>
 
@@ -115,6 +116,7 @@ Usage:
             </div>
 
             <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+
 
             <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
 
