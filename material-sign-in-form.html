@@ -4,6 +4,8 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../polymerfire/firebase.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="../polymerfire/paper-styles.html">
+
 <!--
 A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider.
 
@@ -23,28 +25,62 @@ Usage:
         :host {
             display: block;
         }
+
+        paper-button {
+            color:white;
+            display:block;
+            margin:10px 0px;
+            text-align:center;
+        }
+
+        p {
+          text-align:center;
+          margin-top:20px;
+        }
+
+        #google-button {
+          background-color: var(--paper-blue-500);
+        }
+
+        #github-button {
+          background-color: var(--paper-purple-500);
+        }
+
         </style>
 
         <section id="oauth-providers">
-            <p>Sign in using a third party account</p>
-            <ul>
-                <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
-                <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
-                <li><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
-                <li><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
-            </ul>
+
+            <p>
+              <h1>Logging in?</h1>
+            </p>
+
+            <p>Sign in through</p>
+
+            <paper-button id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Sign in with Google</paper-button>
+
+            <paper-button id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Sign in with Github</paper-button>
+
         </section>
 
         <section id="password-provider">
-            <p>Or sign in with your e-mail address and password</p>
+
+            <p>Or</p>
+
             <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+
             <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
+
             <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
+
             <p hidden$="{{!errorMessage}}">
                 {{errorMessage}}
+
             </p>
+
         </section>
+
     </template>
+
     <script>
     Polymer({
         is: 'material-sign-in-form',
