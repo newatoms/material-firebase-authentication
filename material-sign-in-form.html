@@ -23,54 +23,97 @@ Usage:
     <template>
         <style>
         :host {
-            display: block;
+          display: block;
         }
 
         paper-button {
-            color:white;
-            display:block;
-            margin:10px 0px;
-            text-align:center;
+          color:white;
+          display:block;
+          margin:10px 0px;
+          text-align:center;
+        }
+
+        #facebook-button {
+          background-color: #8b9dc3;
+        }
+
+        #google-button {
+          background-color: var(--paper-red-400);
+          margin-top:20px;
+        }
+
+        #github-button {
+          background-color: var(--paper-grey-900);
+        }
+
+        #login-button {
+          background-color: var(--paper-blue-500);
+          margin-top:20px;
+        }
+
+        h1 {
+          text-align:center;
+          font-size: 25px;
+          font-weight:normal;
+          margin:0px;
+        }
+
+        #login-division {
+          @apply(--layout-horizontal);
+          margin-top:50px;
+        }
+
+        #forgot-password {
+          color: var(--paper-blue-500);
+          height:35px;
         }
 
         p {
           text-align:center;
-          margin-top:20px;
         }
 
-        #google-button {
-          background-color: var(--paper-blue-500);
+        hr {
+          @apply(--layout-flex);
+          border: 0;
+          border-top: 1px solid black;
+          margin:5px 10px;
         }
 
-        #github-button {
-          background-color: var(--paper-purple-500);
-        }
+        paper-input
 
         </style>
 
         <section id="oauth-providers">
 
             <p>
-              <h1>Logging in?</h1>
+              <h1>Login to Leafs</h1>
             </p>
 
-            <p>Sign in through</p>
+            <paper-button id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-button>
 
-            <paper-button id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Sign in with Google</paper-button>
+            <paper-button id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-button>
 
-            <paper-button id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Sign in with Github</paper-button>
+            <paper-button id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-button>
 
         </section>
 
         <section id="password-provider">
 
-            <p>Or</p>
+            <div id="login-division">
+              <p>
+                <hr>
+                Or
+                <hr>
+              </p>
+            </div>
 
             <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
 
-            <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
+            <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+              <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
+            </paper-input>
 
-            <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
+            <paper-button id="login-button" signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
 
             <p hidden$="{{!errorMessage}}">
                 {{errorMessage}}
