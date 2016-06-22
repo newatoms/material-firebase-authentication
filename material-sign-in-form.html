@@ -33,13 +33,9 @@ Usage:
           text-align:center;
         }
 
-        #facebook-button {
-          background-color: #8b9dc3;
-        }
-
         #google-button {
           background-color: var(--paper-red-400);
-          margin-top:20px;
+          margin-top:30px;
         }
 
         #github-button {
@@ -53,7 +49,7 @@ Usage:
 
         h1 {
           text-align:center;
-          font-size: 25px;
+          font-size: 30px;
           font-weight:normal;
           margin:0px;
         }
@@ -61,6 +57,7 @@ Usage:
         #login-division {
           @apply(--layout-horizontal);
           margin-top:50px;
+          margin-bottom:15px;
         }
 
         #forgot-password {
@@ -76,22 +73,19 @@ Usage:
           @apply(--layout-flex);
           border: 0;
           border-top: 1px solid black;
-          margin:5px 10px;
+          margin:6px 10px;
         }
 
-        paper-input
 
         </style>
 
         <section id="oauth-providers">
 
             <p>
-              <h1>Login to Leafs</h1>
+              <h1>Howdy! Login below</h1>
             </p>
 
             <paper-button id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-button>
-
-            <paper-button id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-button>
 
             <paper-button id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-button>
 
@@ -110,6 +104,7 @@ Usage:
             <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
 
             <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+
               <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
             </paper-input>
 
