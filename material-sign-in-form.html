@@ -35,7 +35,7 @@ Usage:
         }
 
         #login-button {
-          margin-top:20px;
+          margin-top:40px;
           width:100%;
           background-color: var(--paper-blue-500);
         }
@@ -57,7 +57,7 @@ Usage:
         h1 {
           text-align:center;
           font-size: 20px;
-          font-weight:lighter;
+          font-weight:normal;
           margin:0px;
         }
 
@@ -93,42 +93,46 @@ Usage:
           <h1>Howdy! Login below</h1>
         </p>
 
-        <section id="oauth-providers">
 
-            <paper-icon-button src="/images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
-
-            <paper-icon-button src="/images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
-
-            <paper-icon-button src="/images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
-
-            <paper-icon-button src="/images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
-
-        </section>
 
         <section id="password-provider">
+
+
+          <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+
+
+          <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+
+            <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
+          </paper-input>
+
+          <paper-button id="login-button" signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
+
+          <p hidden$="{{!errorMessage}}">
+              {{errorMessage}}
+
+          </p>
 
             <div id="login-division">
               <p>
                 <hr>
-                Or
+                Or login through
                 <hr>
               </p>
             </div>
 
-            <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+            <section id="oauth-providers">
 
+                <paper-icon-button src="/images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
 
-            <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+                <paper-icon-button src="/images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
 
-              <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
-            </paper-input>
+                <paper-icon-button src="/images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
 
-            <paper-button id="login-button" signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
+                <paper-icon-button src="/images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
 
-            <p hidden$="{{!errorMessage}}">
-                {{errorMessage}}
+            </section>
 
-            </p>
 
         </section>
 
