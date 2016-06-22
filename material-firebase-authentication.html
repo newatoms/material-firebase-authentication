@@ -18,99 +18,102 @@ Usage:
 @demo demo/material-firebase-authentication.html
 -->
 <dom-module id="material-firebase-authentication">
-    <template>
-        <style>
-        :host {
-            display: block;
-        }
-        </style>
+  <template>
+  <style>
+  :host {
+    display: block;
+  }
+  paper-button {
+    color: inherit;
+  }
+    </style>
 
-        <firebase-auth id="auth"
-        signed-in="{{signedIn}}"
-        user="{{user}}"
-        on-error="_handleAuthError"
-        app="{{app}}"></firebase-auth>
+    <firebase-auth id="auth"
+    signed-in="{{signedIn}}"
+    user="{{user}}"
+    on-error="_handleAuthError"
+    app="{{app}}"></firebase-auth>
 
-        <iron-pages selected="{{page}}" attr-for-selected="data-page">
-            <section data-page="signin">
-                <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
-            </section>
-            <section data-page="signup">
-                <material-create-user-form on-create-user="_createUser"></material-create-user-form>
-            </section>
-            <section data-page="signout">
-                <paper-button signOutButton on-tap="signOut">Sign out</paper-button>
-            </section>
-        </iron-pages>
-    </template>
-    <script>
-    Polymer({
+    <iron-pages selected="{{page}}" attr-for-selected="data-page">
+      <section data-page="signin">
+        <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
+      </section>
+      <section data-page="signup">
+        <material-create-user-form on-create-user="_createUser"></material-create-user-form>
+      </section>
+      <section data-page="signout">
+        <paper-button signOutButton on-tap="signOut">Sign out</paper-button>
+      </section>
+    </iron-pages>
+  </template>
+  <script>
+  Polymer({
 
-        is: 'material-firebase-authentication',
+    is: 'material-firebase-authentication',
 
-        properties: {
-            /** The current page to show, valid values are: `signIn`, `signup` */
-            page: {
-                type: String,
-                value: 'signin'
-            },
-            /** True if the client is authenticated and false if the client is not authenticated */
-            signedIn: {
-                type: Boolean,
-                notify: true,
-                value: false
-            },
-            /** The currently authenticated user with user-related metadata from `firebase-auth` */
-            user: {
-                type: Object,
-                notify: true
-            },
-            /** The firebase app currently functioning in firebase-auth  */
-            app: {
-                type: Object,
-                notify: true
-            }
-        },
+    properties: {
+      /** The current page to show, valid values are: `signIn`, `signup` */
+      page: {
+        type: String,
+        value: 'signin'
+      },
+      /** True if the client is authenticated and false if the client is not authenticated */
+      signedIn: {
+        type: Boolean,
+        notify: true,
+        value: false
+      },
+      /** The currently authenticated user with user-related metadata from `firebase-auth` */
+      user: {
+        type: Object,
+        notify: true
+      },
+      /** The firebase app currently functioning in firebase-auth  */
+      app: {
+        type: Object,
+        notify: true
+      }
+    },
 
-        _requestResetPassword: function (evt, detail) {
-            var auth = this.app.auth();
-            auth.sendPasswordResetEmail(detail.email)
-        },
+    _requestResetPassword: function (evt, detail) {
+      var auth = this.app.auth();
+      auth.sendPasswordResetEmail(detail.email)
+    },
 
-        signOut: function (evt, detail) {
-            this.$.auth.signOut()
-        },
+    signOut: function (evt, detail) {
+      this.$.auth.signOut()
+    },
 
-        _signInFormSignInHandler: function (evt, detail) {
-            if (detail.provider === 'password' && detail.options) {
-                return this.$.auth
-                .signInWithEmailAndPassword(detail.options.email, detail.options.password)
-            }
-            this.$.auth
-            .signInWithPopup(detail.provider)
-        },
+    _signInFormSignInHandler: function (evt, detail) {
+      if (detail.provider === 'password' && detail.options) {
+        return this.$.auth
+        .signInWithEmailAndPassword(detail.options.email, detail.options.password)
+      }
+      this.$.auth
+      .signInWithPopup(detail.provider)
+    },
 
-        _handleAuthError: function (evt, error) {
-            console.error(error)
-            this.fire('error', error)
-            this.querySelector('material-sign-in-form').error(error)
-            this.querySelector('material-create-user-form').error(error)
-        },
+    _handleAuthError: function (evt, error) {
+      console.error(error)
+      this.fire('error', error)
+      this.querySelector('material-sign-in-form').error(error)
+      this.querySelector('material-create-user-form').error(error)
+    },
 
-        _createUser: function (evt, detail) {
-            var self = this
-            var email = detail.email
-            var password = detail.password
-            var displayName = detail.displayName
-            this.$.auth.createUserWithEmailAndPassword(email, password).then(self._updateProfileWithDisplayName(displayName))
-        },
+    _createUser: function (evt, detail) {
+      var self = this
+      var email = detail.email
+      var password = detail.password
+      var displayName = detail.displayName
+      this.$.auth.createUserWithEmailAndPassword(email, password).then(self._updateProfileWithDisplayName(displayName))
+    },
 
-        _updateProfileWithDisplayName: function (displayName) {
-            var self = this
-            // TODO set displayName with proper callback function which waits until this.user is loaded.
-            setTimeout(function(){ self.user.updateProfile({displayName: displayName}) }, 2000);
+    _updateProfileWithDisplayName: function (displayName) {
+      var self = this
+      // TODO set displayName with proper callback function which waits until this.user is loaded.
+      setTimeout(function(){ self.user.updateProfile({displayName: displayName}) }, 2000);
 
-        }
-    });
-    </script>
+    }
+  });
+  </script>
 </dom-module>
