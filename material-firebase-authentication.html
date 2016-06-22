@@ -32,7 +32,7 @@ Usage:
         app="{{app}}"></firebase-auth>
 
         <iron-pages selected="{{page}}" attr-for-selected="data-page">
-            <section data-page="signIn">
+            <section data-page="signin">
                 <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
             </section>
             <section data-page="signup">
@@ -52,7 +52,7 @@ Usage:
             /** The current page to show, valid values are: `signIn`, `signup` */
             page: {
                 type: String,
-                value: 'signIn'
+                value: 'signin'
             },
             /** True if the client is authenticated and false if the client is not authenticated */
             signedIn: {
