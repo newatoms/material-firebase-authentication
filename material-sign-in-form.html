@@ -4,6 +4,10 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../polymerfire/firebase.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+
 <!--
 A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider.
 
@@ -21,30 +25,119 @@ Usage:
     <template>
         <style>
         :host {
-            display: block;
+          display: block;
         }
+
+        paper-button {
+          color:white;
+          margin:10px 0px;
+          text-align:center;
+        }
+
+        #login-button {
+          margin-top:40px;
+          width:100%;
+          background-color: var(--paper-blue-500);
+          font-size: 16px;
+        }
+
+        #auth-providers {
+          margin-top:30px;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-justified);
+        }
+
+        paper-icon-button {
+          border:1px solid var(--paper-grey-200);
+          margin:0px 5px;
+          @apply(--layout-flex);
+          height:50px;
+          border-radius: 3px;
+        }
+
+        #login-division {
+          @apply(--layout-horizontal);
+          margin-top:50px;
+          font-size: 16px;
+        }
+
+        h1 {
+          text-align:center;
+          font-size: 23px;
+          font-weight:normal;
+          margin:0px;
+        }
+
+        gold-email-input {
+          margin-top:30px;
+        }
+
+        #forgot-password {
+          color: var(--paper-blue-500);
+          height:35px;
+        }
+
+        p {
+          text-align:center;
+        }
+
+        hr {
+          @apply(--layout-flex);
+          border: 0;
+          border-top: 1px solid black;
+          margin:8px 10px;
+        }
+
         </style>
 
-        <section id="oauth-providers">
-            <p>Sign in using a third party account</p>
-            <ul>
-                <li><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
-                <li><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
-                <li><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
-                <li><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
-            </ul>
-        </section>
+
+        <p>
+          <h1>Howdy! Login below</h1>
+        </p>
+
+
 
         <section id="password-provider">
-            <p>Or sign in with your e-mail address and password</p>
-            <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
-            <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
-            <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
-            <p hidden$="{{!errorMessage}}">
-                {{errorMessage}}
-            </p>
+
+          <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+
+
+          <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+
+            <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
+          </paper-input>
+
+          <paper-button id="login-button" signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
+
+          <p hidden$="{{!errorMessage}}">
+              {{errorMessage}}
+
+          </p>
+
+            <div id="login-division">
+              <p>
+                <hr>
+                Or login with
+                <hr>
+              </p>
+            </div>
+
+            <section id="auth-providers">
+
+                <paper-icon-button src="/images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
+
+                <paper-icon-button src="/images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
+
+                <paper-icon-button src="/images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
+
+                <paper-icon-button src="/images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
+
+            </section>
+
         </section>
+
     </template>
+
     <script>
     Polymer({
         is: 'material-sign-in-form',
