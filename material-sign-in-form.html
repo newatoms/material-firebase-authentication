@@ -40,7 +40,7 @@ Usage:
           background-color: var(--paper-blue-500);
         }
 
-        #oauth-providers {
+        #auth-providers {
           margin-top:30px;
           @apply(--layout-horizontal);
           @apply(--layout-center-justified);
@@ -73,6 +73,7 @@ Usage:
         #forgot-password {
           color: var(--paper-blue-500);
           height:35px;
+          font-size: 14px;
         }
 
         p {
@@ -97,7 +98,6 @@ Usage:
 
         <section id="password-provider">
 
-
           <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
 
 
@@ -121,7 +121,7 @@ Usage:
               </p>
             </div>
 
-            <section id="oauth-providers">
+            <section id="auth-providers">
 
                 <paper-icon-button src="/images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
 
@@ -132,7 +132,6 @@ Usage:
                 <paper-icon-button src="/images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
 
             </section>
-
 
         </section>
 
