@@ -19,6 +19,8 @@ Usage:
 
 <material-sign-in-form password-provider-button-label="Log in!"></material-sign-in-form>
 
+Styling the color of the login button can be done by setting `--login-button-background-color`
+
 @demo demo/material-sign-in-form_test.html
 -->
 <dom-module id="material-sign-in-form">
@@ -28,17 +30,21 @@ Usage:
           display: block;
         }
 
-        paper-button {
-          color:white;
-          margin:10px 0px;
+        h1 {
+          @apply(--paper-font-headline);
           text-align:center;
         }
 
-        #login-button {
-          @apply(--paper-font-button);
-          margin-top:40px;
+        paper-button#login-button {
           width:100%;
-          background-color: var(--paper-blue-500);
+          margin: 32px 0 0 0;
+          height: 40px;
+          @apply(--paper-font-subhead);
+        }
+
+        #login-button:not([disabled]) {
+          background-color: var(--login-button-background-color, --primary-color);
+          color: var(--light-theme-background-color);
         }
 
         #auth-providers {
@@ -51,19 +57,8 @@ Usage:
           border:1px solid var(--paper-grey-200);
           margin:0px 5px;
           @apply(--layout-flex);
-          height:50px;
+          height:48px;
           border-radius: 3px;
-        }
-
-        #login-division {
-          @apply(--layout-horizontal);
-          @apply(--paper-font-body1);
-          margin-top:50px;
-        }
-
-        h1 {
-          @apply(--paper-font-headline);
-          text-align:center;
         }
 
         gold-email-input {
@@ -71,13 +66,17 @@ Usage:
         }
 
         #forgot-password {
-          @apply(--paper-font-button);
-          color: var(--paper-blue-500);
-          height:35px;
+          margin-right: 0;
         }
 
         p {
           text-align:center;
+        }
+
+        #login-division {
+          @apply(--layout-horizontal);
+          @apply(--paper-font-subhead);
+          margin-top:48px;
         }
 
         hr {
@@ -100,17 +99,14 @@ Usage:
 
           <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
 
-
           <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
-
             <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
           </paper-input>
 
-          <paper-button id="login-button" signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
+          <paper-button id="login-button" raised on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
 
           <p hidden$="{{!errorMessage}}">
               {{errorMessage}}
-
           </p>
 
             <div id="login-division">
