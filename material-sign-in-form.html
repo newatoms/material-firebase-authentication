@@ -90,7 +90,7 @@ Styling the color of the login button can be done by setting `--login-button-bac
 
 
         <p>
-          <h1>Howdy! Login below</h1>
+          <h1>Howdy! Sign in below</h1>
         </p>
 
 
@@ -103,7 +103,7 @@ Styling the color of the login button can be done by setting `--login-button-bac
             <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
           </paper-input>
 
-          <paper-button id="login-button" raised on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Login</paper-button>
+          <paper-button id="login-button" raised on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
 
           <p hidden$="{{!errorMessage}}">
               {{errorMessage}}
@@ -112,7 +112,7 @@ Styling the color of the login button can be done by setting `--login-button-bac
             <div id="login-division">
               <p>
                 <hr>
-                Or login with
+                Or sign in with
                 <hr>
               </p>
             </div>
