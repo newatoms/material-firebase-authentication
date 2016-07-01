@@ -106,12 +106,13 @@ Usage:
       var email = detail.email
       var password = detail.password
       var displayName = detail.displayName
-      this.$.auth.createUserWithEmailAndPassword(email, password).then(
-        self._updateProfileWithDisplayName(displayName)
-        self.fire('user-created')
-      )
+      this.$.auth.createUserWithEmailAndPassword(email, password).then(self._handleSuccessfulLogin(displayName))
     },
 
+    _handleSuccessfulLogin: function (displayName) {
+      self._updateProfileWithDisplayName(displayName)
+      self.fire('user-created')
+    },
     _updateProfileWithDisplayName: function (displayName) {
       var self = this
       // TODO set displayName with proper callback function which waits until this.user is loaded.
