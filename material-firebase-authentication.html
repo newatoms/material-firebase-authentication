@@ -88,10 +88,10 @@ Usage:
       if (detail.provider === 'password' && detail.options) {
         var self = this
         return this.$.auth
-        .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('succesful-login'))
+        .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('successful-login'))
       }
       this.$.auth
-      .signInWithPopup(detail.provider).then(self.fire('succesful-login'))
+      .signInWithPopup(detail.provider).then(self.fire('successful-login'))
     },
 
     _handleAuthError: function (evt, error) {
