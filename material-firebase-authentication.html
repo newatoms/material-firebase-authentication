@@ -86,11 +86,12 @@ Usage:
 
     _signInFormSignInHandler: function (evt, detail) {
       if (detail.provider === 'password' && detail.options) {
+        var self = this
         return this.$.auth
-        .signInWithEmailAndPassword(detail.options.email, detail.options.password)
+        .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('succesful-login'))
       }
       this.$.auth
-      .signInWithPopup(detail.provider)
+      .signInWithPopup(detail.provider).then(self.fire('succesful-login'))
     },
 
     _handleAuthError: function (evt, error) {
@@ -105,7 +106,10 @@ Usage:
       var email = detail.email
       var password = detail.password
       var displayName = detail.displayName
-      this.$.auth.createUserWithEmailAndPassword(email, password).then(self._updateProfileWithDisplayName(displayName))
+      this.$.auth.createUserWithEmailAndPassword(email, password).then(
+        self._updateProfileWithDisplayName(displayName)
+        self.fire('user-created')
+      )
     },
 
     _updateProfileWithDisplayName: function (displayName) {
