@@ -110,6 +110,7 @@ Usage:
     },
 
     _handleSuccessfulLogin: function (displayName) {
+      var self = this
       self._updateProfileWithDisplayName(displayName)
       self.fire('user-created')
     },
