@@ -90,6 +90,7 @@ Usage:
         return this.$.auth
         .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('successful-login'))
       }
+      var self = this
       this.$.auth
       .signInWithPopup(detail.provider).then(self.fire('successful-login'))
     },
