@@ -37,7 +37,7 @@ Styling the color of the login button can be done by setting `--login-button-bac
 
         paper-button#login-button {
           width:100%;
-          margin: 32px 0 0 0;
+          margin: 32px 0 25px 0;
           height: 40px;
           @apply(--paper-font-subhead);
         }
@@ -86,6 +86,10 @@ Styling the color of the login button can be done by setting `--login-button-bac
           margin:8px 10px;
         }
 
+        #error-message {
+          text-align:center;
+          color: var(--google-red-500);
+        }
         </style>
 
 
@@ -105,7 +109,7 @@ Styling the color of the login button can be done by setting `--login-button-bac
 
           <paper-button id="login-button" raised on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
 
-          <p hidden$="{{!errorMessage}}">
+          <p id="error-message" hidden$="{{!errorMessage}}">
               {{errorMessage}}
           </p>
 
@@ -234,13 +238,13 @@ Styling the color of the login button can be done by setting `--login-button-bac
                 return this._setErrorMessage('Invalid e-mail address')
             }
             if (error.code === "auth/wrong-password") {
-                return this._setErrorMessage('Invalid password')
+                return this._setErrorMessage('Oops, looks like you entered an invalid password')
             }
             if (error.code === "auth/user-not-found") {
-                return this._setErrorMessage('Account does not exist')
+                return this._setErrorMessage('Oops, looks like you entered the wrong email adress')
             }
             if (error.code === "auth/user-disabled") {
-                return this._setErrorMessage('Application not authorized with provider')
+                return this._setErrorMessage('External application not authorized with provider')
             }
             if (error.code === "auth/app-not-authorized") {
                 return this._setErrorMessage('Provider error')
@@ -263,6 +267,9 @@ Styling the color of the login button can be done by setting `--login-button-bac
                 this.signInWithPassword();
             }
         },
+        _setErrorMessage: function (error) {
+          this.set('errorMessage', error)
+        }
     });
     </script>
 </dom-module>
