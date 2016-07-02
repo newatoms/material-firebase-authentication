@@ -2,6 +2,7 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
 <!--
 A form for creating a firebase authentication account and displaying input elements that are relevant to create the account.
 
@@ -14,21 +15,52 @@ Usage:
 <dom-module id="material-create-user-form">
     <template>
         <style>
-        :host {
-            display: block;
-        }
+          :host {
+              display: block;
+          }
+
+          h1 {
+            @apply(--paper-font-headline);
+            text-align:center;
+          }
+
+          paper-button#create-account-button {
+            width:100%;
+            margin: 32px 0 25px 0;
+            height: 40px;
+            @apply(--paper-font-subhead);
+          }
+
+          paper-button#create-account-button:not([disabled]) {
+            background-color: var(--login-button-background-color, --primary-color);
+            color: var(--light-theme-background-color);
+          }
+
+          #error-message {
+            text-align:center;
+            color: var(--google-red-500);
+          }
         </style>
 
         <section id="password-provider">
-            <p>Sign up with your e-mail address and password</p>
-            <paper-input label="Name" value="{{displayName}}"></paper-input>
+
+            <h1>
+              Joining us?<br/>
+              Create an account below
+            </h1>
+
+            <paper-input label="Full Name" value="{{displayName}}"></paper-input>
 
             <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
+
             <paper-input label="Password" value="{{password}}" type="password" auto-validate></paper-input>
-            <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Create account</paper-button>
-            <p hidden$="{{!errorMessage}}">
+
+            <paper-button id="create-account-button" on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Create account</paper-button>
+
+            <p id="error-message" hidden$="{{!errorMessage}}">
                 {{errorMessage}}
             </p>
+
         </section>
 
     </template>
@@ -70,7 +102,7 @@ Usage:
 
             _emailInvalid: Boolean,
         },
-        
+
         /**
         * Non bubbling, to signal the need for a signUp.
         *
@@ -103,7 +135,7 @@ Usage:
             if (error.code === "auth/email-already-in-use")
             return this._setErrorMessage('Email adress already in use')
             if (error.code === "auth/invalid-email") {
-                return this._setErrorMessage('Invalid e-mail address')
+                return this._setErrorMessage('Oops, this email adress is not valid')
             }
             return this._setErrorMessage('Error')
         },
@@ -111,6 +143,9 @@ Usage:
         _emailAndPasswordValid: function (email, displayName, emailInvalid, password) {
             return (email !== '' && displayName !== '' && password !== '' && emailInvalid === false)
         },
+        _setErrorMessage: function (error) {
+          this.set('errorMessage', error)
+        }
     });
     </script>
 </dom-module>

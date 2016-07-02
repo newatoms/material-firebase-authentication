@@ -43,7 +43,7 @@
                 assert.equal(element.is, 'material-firebase-authentication');
             });
 
-            test('the default page is \'signIn\'', function() {
+            test('the default page is \'signin\'', function() {
                 var element = fixture('basic');
                 assert.equal(element.page, 'signin');
 
@@ -51,7 +51,7 @@
                 assert.equal(pages.selected, 'signin')
             });
 
-            test('\'signIn\' page exists', function () {
+            test('\'signin\' page exists', function () {
                 var element = fixture('basic');
                 var page = element.querySelector('iron-pages section[data-page="signin"]')
                 expect(page).to.exist

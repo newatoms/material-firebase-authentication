@@ -4,6 +4,10 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../polymerfire/firebase.html">
 <link rel="import" href="../polymerfire/firebase-common-behavior.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+
 <!--
 A form for selecting a firebase authentication provider and displaying input elements that are relevant for that provider.
 
@@ -15,193 +19,285 @@ Usage:
 
 <material-sign-in-form password-provider-button-label="Log in!"></material-sign-in-form>
 
+Styling the color of the login button can be done by setting `--login-button-background-color`
+
 @demo demo/material-sign-in-form_test.html
 -->
 <dom-module id="material-sign-in-form">
-  <template>
-    <style>
-    :host {
-      display: block;
-    }
-    </style>
-    <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
-      <section id="oauth-providers">
-        <p>Sign in using a third party account</p>
-        <ul>
-          <li hidden="{{noAuthViaGithub}}"><paper-button on-tap="signInWithGithub">GitHub</paper-button></li>
-          <li hidden="{{noAuthViaGoogle}}"><paper-button on-tap="signInWithGoogle">Google</paper-button></li>
-          <li hidden="{{noAuthViaFacebook}}"><paper-button on-tap="signInWithFacebook">Facebook</paper-button></li>
-          <li hidden="{{noAuthViaTwitter}}"><paper-button on-tap="signInWithTwitter">Twitter</paper-button></li>
-        </ul>
-      </section>
+    <template>
+        <style>
+        :host {
+          display: block;
+        }
+
+        h1 {
+          @apply(--paper-font-headline);
+          text-align:center;
+        }
+
+        paper-button#login-button {
+          width:100%;
+          margin: 32px 0 25px 0;
+          height: 40px;
+          @apply(--paper-font-subhead);
+        }
+
+        #login-button:not([disabled]) {
+          background-color: var(--login-button-background-color, --primary-color);
+          color: var(--light-theme-background-color);
+        }
+
+        #auth-providers {
+          margin-top:30px;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-justified);
+        }
+
+        paper-icon-button {
+          border:1px solid var(--paper-grey-200);
+          margin:0px 5px;
+          @apply(--layout-flex);
+          height:48px;
+          border-radius: 3px;
+        }
+
+        gold-email-input {
+          margin-top:30px;
+        }
+
+        #forgot-password {
+          margin-right: 0;
+        }
+
+        p {
+          text-align:center;
+        }
+
+        #login-division {
+          @apply(--layout-horizontal);
+          @apply(--paper-font-subhead);
+          margin-top:48px;
+        }
+
+        hr {
+          @apply(--layout-flex);
+          border: 0;
+          border-top: 1px solid black;
+          margin:8px 10px;
+        }
+
+        #error-message {
+          text-align:center;
+          color: var(--google-red-500);
+        }
+        </style>
+
+
+        <p>
+          <h1>Howdy! Sign in below</h1>
+        </p>
+
+
+
+        <section id="password-provider">
+
+          <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
+
+          <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate>
+            <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
+          </paper-input>
+
+          <paper-button id="login-button" raised on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
+
+          <p id="error-message" hidden$="{{!errorMessage}}">
+              {{errorMessage}}
+          </p>
+
+          <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
+
+            <div id="login-division">
+              <p>
+                <hr>
+                Or sign in with
+                <hr>
+              </p>
+            </div>
+
+            <section id="auth-providers">
+
+                <paper-icon-button hidden$="{{noAuthViaGoogle}}" src="images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
+
+                <paper-icon-button hidden$="{{noAuthViaFacebook}}" src="images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
+
+                <paper-icon-button hidden$="{{noAuthViaGithub}}" src="images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
+
+                <paper-icon-button hidden$="{{noAuthViaTwitter}}" src="images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
+
+            </section>
+          </template>
+
+        </section>
+
     </template>
 
-    <section id="password-provider">
-      <p>Or sign in with your e-mail address and password</p>
-      <gold-email-input label="E-mail address" value="{{email}}" on-keypress="_keyPressed" invalid="{{_emailInvalid}}" auto-validate ></gold-email-input>
-      <paper-input label="Password" value="{{password}}" type="password"  on-keypress="_keyPressed" auto-validate><paper-button suffix on-tap="requestResetPassword">Forgot?</paper-button></paper-input>
-      <paper-button signInButton on-tap="signInWithPassword"  on-keypress="_keyPressed" disabled="{{!inputsValid}}">Sign in</paper-button>
-      <p hidden$="{{!errorMessage}}">
-        {{errorMessage}}
-      </p>
-    </section>
-  </template>
-  <script>
-  Polymer({
-    is: 'material-sign-in-form',
+    <script>
+    Polymer({
+        is: 'material-sign-in-form',
 
-    properties: {
-      /** E-mail address for use with the `password` provider **/
-      email: {
-        type: String,
-        notify: true,
-        value: ''
-      },
-      /** Password for use with the `password` provider **/
-      password: {
-        type: String,
-        notify: true,
-        value: ''
-      },
-      /** Both the e-mail and the password are filled in */
-      inputsValid: {
-        type: Boolean,
-        computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
-        value: false
-      },
-      /** Both the e-mail and the password are filled in */
-      errorMessage: {
-        type: String,
-        value: null,
-        readOnly: true
-      },
-      /** Don't allow users to login/create an account with an external authentication provider  */
-      noExternalAuthentication: {
-        type: Boolean,
-        value: false
-      },
-      /** Enable the user to login/create an account via Github  */
-      noAuthViaGithub: {
-        type: Boolean,
-        value: false
-      },
-      /** Enable the user to login/create an account via Google  */
-      noAuthViaGoogle: {
-        type: Boolean,
-        value: false
-      },
-      /** Enable the user to login/create an account via Facebook  */
-      noAuthViaFacebook: {
-        type: Boolean,
-        value: false
-      },
-      /** Enable the user to login/create an account via Twitter  */
-      noAuthViaTwitter: {
-        type: Boolean,
-        value: false
-      },
-
-      _emailInvalid: Boolean,
-    },
+        properties: {
+            /** E-mail address for use with the `password` provider **/
+            email: {
+                type: String,
+                notify: true,
+                value: ''
+            },
+            /** Password for use with the `password` provider **/
+            password: {
+                type: String,
+                notify: true,
+                value: ''
+            },
+            /** Both the e-mail and the password are filled in */
+            inputsValid: {
+                type: Boolean,
+                computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
+                value: false
+            },
+            /** Both the e-mail and the password are filled in */
+            errorMessage: {
+                type: String,
+                value: null,
+                readOnly: true
+            },
+            /** Don't allow users to login/create an account with an external authentication provider  */
+            noExternalAuthentication: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Github  */
+            noAuthViaGithub: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Google  */
+            noAuthViaGoogle: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Facebook  */
+            noAuthViaFacebook: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Twitter  */
+            noAuthViaTwitter: {
+              type: Boolean,
+              value: false
+            },
+            _emailInvalid: Boolean,
+        },
 
 
-    requestResetPassword: function () {
-      this._setErrorMessage(null)
-      if (this.email && !this._emailInvalid) return this.fire('request-reset-password', {email: this.email})
-      return this._setErrorMessage('Please enter a valid e-mail address')
-    },
+        requestResetPassword: function () {
+            this._setErrorMessage(null)
+            if (this.email && !this._emailInvalid) return this.fire('request-reset-password', {email: this.email})
+            return this._setErrorMessage('Please enter a valid e-mail address')
+        },
 
-    /** Fire the `signIn` event with provider `github` */
-    signInWithGithub: function () {
-      var github = new firebase.auth.GithubAuthProvider()
-      return this.signIn(github)
-    },
+        /** Fire the `signIn` event with provider `github` */
+        signInWithGithub: function () {
+            var github = new firebase.auth.GithubAuthProvider()
+            return this.signIn(github)
+        },
 
-    /** Fire the `signIn` event with provider `google` */
-    signInWithGoogle: function () {
-      var google = new firebase.auth.GoogleAuthProvider()
-      return this.signIn(google)
-    },
+        /** Fire the `signIn` event with provider `google` */
+        signInWithGoogle: function () {
+            var google = new firebase.auth.GoogleAuthProvider()
+            return this.signIn(google)
+        },
 
-    /** Fire the `signIn` event with provider `facebook` */
-    signInWithFacebook: function () {
-      var facebook = new firebase.auth.FacebookAuthProvider()
-      return this.signIn(facebook)
-    },
+        /** Fire the `signIn` event with provider `facebook` */
+        signInWithFacebook: function () {
+            var facebook = new firebase.auth.FacebookAuthProvider()
+            return this.signIn(facebook)
+        },
 
-    /** Fire the `signIn` event with provider `twitter` */
-    signInWithTwitter: function () {
-      var twitter = new firebase.auth.TwitterAuthProvider()
-      return this.signIn(twitter)
-    },
+        /** Fire the `signIn` event with provider `twitter` */
+        signInWithTwitter: function () {
+            var twitter = new firebase.auth.TwitterAuthProvider()
+            return this.signIn(twitter)
+        },
 
-    /** Fire the `signIn` event with provider `password` and the email and password in the options */
-    signInWithPassword: function () {
-      return this.signIn('password', {
-        email: this.email,
-        password: this.password
-      })
-    },
+        /** Fire the `signIn` event with provider `password` and the email and password in the options */
+        signInWithPassword: function () {
+            return this.signIn('password', {
+                email: this.email,
+                password: this.password
+            })
+        },
 
-    /**
-    * Non bubling, to signal the need for a signIn.
-    *
-    * @event signIn
-    */
+        /**
+        * Non bubling, to signal the need for a signIn.
+        *
+        * @event signIn
+        */
 
-    /**
-    * Fire the `signIn` event
-    *
-    * @param {string} provider can be any valid Firebase authentication provider.
-    * @param {object} options object of the options to fire with the event, becomes event detail.
-    */
-    signIn: function (provider, options) {
-      this._setErrorMessage(null)
-      return this.fire('sign-in', {
-        provider: provider,
-        options: options
-      }, {
-        bubbles: false
-      })
-    },
+        /**
+        * Fire the `signIn` event
+        *
+        * @param {string} provider can be any valid Firebase authentication provider.
+        * @param {object} options object of the options to fire with the event, becomes event detail.
+        */
+        signIn: function (provider, options) {
+            this._setErrorMessage(null)
+            return this.fire('sign-in', {
+                provider: provider,
+                options: options
+            }, {
+                bubbles: false
+            })
+        },
 
-    /**
-    * Set the error message to display
-    */
-    error: function (error) {
-      if (error.code === "auth/invalid-email") {
-        return this._setErrorMessage('Invalid e-mail address')
-      }
-      if (error.code === "auth/wrong-password") {
-        return this._setErrorMessage('Invalid password')
-      }
-      if (error.code === "auth/user-not-found") {
-        return this._setErrorMessage('Account does not exist')
-      }
-      if (error.code === "auth/user-disabled") {
-        return this._setErrorMessage('Application not authorized with provider')
-      }
-      if (error.code === "auth/app-not-authorized") {
-        return this._setErrorMessage('Provider error')
-      }
-      if (error.code === "auth/network-request-failed") {
-        return this._setErrorMessage('Network error')
-      }
-      if (error.code === "auth/weak-password") {
-        return this._setErrorMessage('Please provide a stronger password')
-      }
-      return this._setErrorMessage('Error')
-    },
+        /**
+        * Set the error message to display
+        */
+        error: function (error) {
+            if (error.code === "auth/invalid-email") {
+                return this._setErrorMessage('Invalid e-mail address')
+            }
+            if (error.code === "auth/wrong-password") {
+                return this._setErrorMessage('Oops, looks like you entered an invalid password')
+            }
+            if (error.code === "auth/user-not-found") {
+                return this._setErrorMessage('Oops, looks like you entered the wrong email adress')
+            }
+            if (error.code === "auth/user-disabled") {
+                return this._setErrorMessage('External application not authorized with provider')
+            }
+            if (error.code === "auth/app-not-authorized") {
+                return this._setErrorMessage('Provider error')
+            }
+            if (error.code === "auth/network-request-failed") {
+                return this._setErrorMessage('Network error')
+            }
+            if (error.code === "auth/weak-password") {
+                return this._setErrorMessage('Please provide a stronger password')
+            }
+            return this._setErrorMessage('Error')
+        },
 
-    _emailAndPasswordValid: function (email, emailInvalid, password) {
-      return (email !== '' && password !== '' && emailInvalid === false)
-    },
+        _emailAndPasswordValid: function (email, emailInvalid, password) {
+            return (email !== '' && password !== '' && emailInvalid === false)
+        },
 
-    _keyPressed: function(e) {
-      if (e.keyCode == 13 && !e.shiftKey && this.inputsValid === true) {
-        this.signInWithPassword();
-      }
-    },
-  });
-  </script>
+        _keyPressed: function(e) {
+            if (e.keyCode == 13 && !e.shiftKey && this.inputsValid === true) {
+                this.signInWithPassword();
+            }
+        },
+        _setErrorMessage: function (error) {
+          this.set('errorMessage', error)
+        }
+    });
+    </script>
 </dom-module>
