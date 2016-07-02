@@ -76,6 +76,7 @@ Usage:
     },
 
     signOut: function (evt, detail) {
+      var self = this
       this.$.auth.signOut().then(self._fireEvent('successful-sign-out'), self._fireEvent('failed-sign-out'))
     },
 
@@ -92,7 +93,7 @@ Usage:
         .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self._fireEvent('successful-sign-in'), self._fireEvent('failed-sign-in'))
       }
       this.$.auth
-      .signInWithPopup(detail.provider).then(self.fire('successful-sign-in'), self._fireEvent('failed-sign-in'))
+      .signInWithPopup(detail.provider).then(self._fireEvent('successful-sign-in'), self._fireEvent('failed-sign-in'))
     },
 
     _handleAuthError: function (evt, error) {
