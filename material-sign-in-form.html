@@ -113,6 +113,8 @@ Styling the color of the login button can be done by setting `--login-button-bac
               {{errorMessage}}
           </p>
 
+          <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
+
             <div id="login-division">
               <p>
                 <hr>
@@ -123,15 +125,16 @@ Styling the color of the login button can be done by setting `--login-button-bac
 
             <section id="auth-providers">
 
-                <paper-icon-button src="images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
+                <paper-icon-button hidden$="{{noAuthViaGoogle}}" src="images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
 
-                <paper-icon-button src="images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
+                <paper-icon-button hidden$="{{noAuthViaFacebook}}" src="images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
 
-                <paper-icon-button src="images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
+                <paper-icon-button hidden$="{{noAuthViaGithub}}" src="images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
 
-                <paper-icon-button src="images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
+                <paper-icon-button hidden$="{{noAuthViaTwitter}}" src="images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
 
             </section>
+          </template>
 
         </section>
 
@@ -165,6 +168,31 @@ Styling the color of the login button can be done by setting `--login-button-bac
                 type: String,
                 value: null,
                 readOnly: true
+            },
+            /** Don't allow users to login/create an account with an external authentication provider  */
+            noExternalAuthentication: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Github  */
+            noAuthViaGithub: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Google  */
+            noAuthViaGoogle: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Facebook  */
+            noAuthViaFacebook: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Twitter  */
+            noAuthViaTwitter: {
+              type: Boolean,
+              value: false
             },
             _emailInvalid: Boolean,
         },
@@ -211,11 +239,11 @@ Styling the color of the login button can be done by setting `--login-button-bac
         /**
         * Non bubling, to signal the need for a signIn.
         *
-        * @event signIn
+        * @event sign-in
         */
 
         /**
-        * Fire the `signIn` event
+        * Fire the `sign-in` event
         *
         * @param {string} provider can be any valid Firebase authentication provider.
         * @param {object} options object of the options to fire with the event, becomes event detail.

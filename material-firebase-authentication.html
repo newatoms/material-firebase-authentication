@@ -36,7 +36,14 @@ Usage:
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signin">
-        <material-sign-in-form on-sign-in="_signInFormSignInHandler" on-request-reset-password="_requestResetPassword"></material-sign-in-form>
+        <material-sign-in-form  on-sign-in="_signInFormSignInHandler"
+                                on-request-reset-password="_requestResetPassword"
+                                no-external-authentication="{{noExternalAuthentication}}"
+                                no-auth-via-github="{{noAuthViaGithub}}"
+                                no-auth-via-google="{{noAuthViaGoogle}}"
+                                no-auth-via-facebook="{{noAuthViaFacebook}}"
+                                no-auth-via-twitter="{{noAuthViaTwitter}}"
+        ></material-sign-in-form>
       </section>
       <section data-page="signup">
         <material-create-user-form on-create-user="_createUser"></material-create-user-form>
@@ -72,7 +79,32 @@ Usage:
       app: {
         type: Object,
         notify: true
-      }
+      },
+      /** Don't allow users to login/create an account with an external authentication provider  */
+      noExternalAuthentication: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Github  */
+      noAuthViaGithub: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Google  */
+      noAuthViaGoogle: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Facebook  */
+      noAuthViaFacebook: {
+        type: Boolean,
+        value: false
+      },
+      /** Enable the user to login/create an account via Twitter  */
+      noAuthViaTwitter: {
+        type: Boolean,
+        value: false
+      },
     },
 
     signOut: function (evt, detail) {
