@@ -28,11 +28,12 @@ Usage:
     }
     </style>
 
-    <firebase-auth id="auth"
-    signed-in="{{signedIn}}"
-    user="{{user}}"
-    on-error="_handleAuthError"
-    app="{{app}}"></firebase-auth>
+    <firebase-auth  id="auth"
+                    signed-in="{{signedIn}}"
+                    user="{{user}}"
+                    on-error="_handleAuthError"
+                    app="{{app}}"
+                    ></firebase-auth>
 
     <iron-pages selected="{{page}}" attr-for-selected="data-page">
       <section data-page="signin">
@@ -43,7 +44,7 @@ Usage:
                                 no-auth-via-google="{{noAuthViaGoogle}}"
                                 no-auth-via-facebook="{{noAuthViaFacebook}}"
                                 no-auth-via-twitter="{{noAuthViaTwitter}}"
-        ></material-sign-in-form>
+                                ></material-sign-in-form>
       </section>
       <section data-page="signup">
         <material-create-user-form on-create-user="_createUser"></material-create-user-form>
@@ -113,8 +114,11 @@ Usage:
     },
 
     _requestResetPassword: function (evt, detail) {
+      var self = this
       var auth = this.app.auth();
-      auth.sendPasswordResetEmail(detail.email)
+      auth.sendPasswordResetEmail(detail.email).catch(function (error) {
+        self._handleAuthError('forgot password error event', error)
+      })
     },
 
     _signInFormSignInHandler: function (evt, detail) {
