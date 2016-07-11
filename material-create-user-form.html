@@ -3,6 +3,9 @@
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../polymerfire/firebase.html">
+<link rel="import" href="../polymerfire/firebase-common-behavior.html">
+
 <!--
 A form for creating a firebase authentication account and displaying input elements that are relevant to create the account.
 
@@ -40,6 +43,33 @@ Usage:
             text-align:center;
             color: var(--google-red-500);
           }
+
+          #auth-providers {
+            margin-top:30px;
+            @apply(--layout-horizontal);
+            @apply(--layout-center-justified);
+          }
+
+          paper-icon-button {
+            border:1px solid var(--paper-grey-200);
+            margin:0px 5px;
+            @apply(--layout-flex);
+            height:48px;
+            border-radius: 3px;
+          }
+
+          #login-division {
+            @apply(--layout-horizontal);
+            @apply(--paper-font-subhead);
+            margin-top:48px;
+          }
+
+          hr {
+            @apply(--layout-flex);
+            border: 0;
+            border-top: 1px solid black;
+            margin:8px 10px;
+          }
         </style>
 
         <section id="password-provider">
@@ -60,6 +90,29 @@ Usage:
             <p id="error-message" hidden$="{{!errorMessage}}">
                 {{errorMessage}}
             </p>
+
+            <template is="dom-if" if="{{!noExternalAuthentication}}" restamp="true">
+
+              <div id="login-division">
+                <p>
+                  <hr>
+                  Or sign up using
+                  <hr>
+                </p>
+              </div>
+
+              <section id="auth-providers">
+
+                  <paper-icon-button hidden$="{{noAuthViaGoogle}}" src="images/icon-co-facebook.svg" id="facebook-button" signInButton on-tap="signInWithFacebook"  on-keypress="_keyPressed">Login with Facebook</paper-icon-button>
+
+                  <paper-icon-button hidden$="{{noAuthViaFacebook}}" src="images/icon-co-google.svg" id="google-button" signInButton on-tap="signInWithGoogle"  on-keypress="_keyPressed">Login with Google</paper-icon-button>
+
+                  <paper-icon-button hidden$="{{noAuthViaGithub}}" src="images/icon-co-github.svg" id="github-button" signInButton on-tap="signInWithGithub"  on-keypress="_keyPressed">Login with Github</paper-icon-button>
+
+                  <paper-icon-button hidden$="{{noAuthViaTwitter}}" src="images/icon-co-twitter.svg" id="twitter-button" signInButton on-tap="signInWithTwitter"  on-keypress="_keyPressed">Login with Twitter</paper-icon-button>
+
+              </section>
+            </template>
 
         </section>
 
@@ -99,7 +152,31 @@ Usage:
                 value: null,
                 readOnly: true
             },
-
+            /** Don't allow users to login/create an account with an external authentication provider  */
+            noExternalAuthentication: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Github  */
+            noAuthViaGithub: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Google  */
+            noAuthViaGoogle: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Facebook  */
+            noAuthViaFacebook: {
+              type: Boolean,
+              value: false
+            },
+            /** Enable the user to login/create an account via Twitter  */
+            noAuthViaTwitter: {
+              type: Boolean,
+              value: false
+            },
             _emailInvalid: Boolean,
         },
 
@@ -126,7 +203,44 @@ Usage:
                 bubbles: false
             })
         },
+        /** Fire the `signIn` event with provider `github` */
+        signInWithGithub: function () {
+            var github = new firebase.auth.GithubAuthProvider()
+            return this.signIn(github)
+        },
 
+        /** Fire the `signIn` event with provider `google` */
+        signInWithGoogle: function () {
+            var google = new firebase.auth.GoogleAuthProvider()
+            return this.signIn(google)
+        },
+
+        /** Fire the `signIn` event with provider `facebook` */
+        signInWithFacebook: function () {
+            var facebook = new firebase.auth.FacebookAuthProvider()
+            return this.signIn(facebook)
+        },
+
+        /** Fire the `signIn` event with provider `twitter` */
+        signInWithTwitter: function () {
+            var twitter = new firebase.auth.TwitterAuthProvider()
+            return this.signIn(twitter)
+        },
+        /**
+        * Fire the `sign-in` event
+        *
+        * @param {string} provider can be any valid Firebase authentication provider.
+        * @param {object} options object of the options to fire with the event, becomes event detail.
+        */
+        signIn: function (provider, options) {
+            this._setErrorMessage(null)
+            return this.fire('sign-in', {
+                provider: provider,
+                options: options
+            }, {
+                bubbles: false
+            })
+        },
         /**
         * Set the error message to display
         */
