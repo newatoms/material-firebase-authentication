@@ -47,7 +47,14 @@ Usage:
                                 ></material-sign-in-form>
       </section>
       <section data-page="signup">
-        <material-create-user-form on-create-user="_createUser"></material-create-user-form>
+        <material-create-user-form  on-sign-in="_signInFormSignInHandler"
+                                    on-create-user="_createUser"
+                                    no-external-authentication="{{noExternalAuthentication}}"
+                                    no-auth-via-github="{{noAuthViaGithub}}"
+                                    no-auth-via-google="{{noAuthViaGoogle}}"
+                                    no-auth-via-facebook="{{noAuthViaFacebook}}"
+                                    no-auth-via-twitter="{{noAuthViaTwitter}}"
+                                    ></material-create-user-form>
       </section>
       <section data-page="signout">
         <paper-button signOutButton on-tap="signOut">Sign out</paper-button>

@@ -2,8 +2,6 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../gold-email-input/gold-email-input.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../polymerfire/firebase.html">
-<link rel="import" href="../polymerfire/firebase-common-behavior.html">
 <link rel="import" href="../paper-styles/paper-styles.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 
@@ -206,26 +204,22 @@ Styling the color of the login button can be done by setting `--login-button-bac
 
         /** Fire the `signIn` event with provider `github` */
         signInWithGithub: function () {
-            var github = new firebase.auth.GithubAuthProvider()
-            return this.signIn(github)
+            return this.signIn('github')
         },
 
         /** Fire the `signIn` event with provider `google` */
         signInWithGoogle: function () {
-            var google = new firebase.auth.GoogleAuthProvider()
-            return this.signIn(google)
+            return this.signIn('google')
         },
 
         /** Fire the `signIn` event with provider `facebook` */
         signInWithFacebook: function () {
-            var facebook = new firebase.auth.FacebookAuthProvider()
-            return this.signIn(facebook)
+            return this.signIn('facebook')
         },
 
         /** Fire the `signIn` event with provider `twitter` */
         signInWithTwitter: function () {
-            var twitter = new firebase.auth.TwitterAuthProvider()
-            return this.signIn(twitter)
+            return this.signIn('twitter')
         },
 
         /** Fire the `signIn` event with provider `password` and the email and password in the options */
@@ -282,6 +276,12 @@ Styling the color of the login button can be done by setting `--login-button-bac
             }
             if (error.code === "auth/weak-password") {
                 return this._setErrorMessage('Please provide a stronger password')
+            }
+            if (error.code === "auth/cancelled-popup-request") {
+                return this._setErrorMessage('')
+            }
+            if (error.code === "auth/popup-closed-by-user") {
+                return this._setErrorMessage('')
             }
             return this._setErrorMessage('Error')
         },
