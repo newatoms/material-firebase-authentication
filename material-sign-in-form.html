@@ -277,6 +277,12 @@ Styling the color of the login button can be done by setting `--login-button-bac
             if (error.code === "auth/weak-password") {
                 return this._setErrorMessage('Please provide a stronger password')
             }
+            if (error.code === "auth/cancelled-popup-request") {
+                return this._setErrorMessage('')
+            }
+            if (error.code === "auth/popup-closed-by-user") {
+                return this._setErrorMessage('')
+            }
             return this._setErrorMessage('Error')
         },
 

@@ -245,6 +245,12 @@ Usage:
             if (error.code === "auth/invalid-email") {
                 return this._setErrorMessage('Oops, this email adress is not valid')
             }
+            if (error.code === "auth/cancelled-popup-request") {
+                return this._setErrorMessage('')
+            }
+            if (error.code === "auth/popup-closed-by-user") {
+                return this._setErrorMessage('')
+            }
             return this._setErrorMessage('Error')
         },
 
