@@ -47,7 +47,7 @@ Usage:
                                 ></material-sign-in-form>
       </section>
       <section data-page="signup">
-        <material-create-user-form  on-sign-in="_signInFormSignInHandler"
+        <material-create-user-form  on-sign-in="_createUserViaExternalProvider"
                                     on-create-user="_createUser"
                                     no-external-authentication="{{noExternalAuthentication}}"
                                     no-auth-via-github="{{noAuthViaGithub}}"
@@ -149,6 +149,13 @@ Usage:
     _createUser: function (evt, detail) {
       var self = this
       this.$.auth.createUserWithEmailAndPassword(detail.email, detail.password).then(self._handleSuccessfulUserCreation(detail.displayName), self._fireEvent('failed-account-creation'))
+    },
+
+    _createUserViaExternalProvider: function () {
+      var self = this
+
+      this.$.auth
+      .signInWithPopup(detail.provider).then(self._fireEvent('user-created'), self._fireEvent('failed-to-create-account'))
     },
 
     _fireEvent: function (eventDescription, payload) {
