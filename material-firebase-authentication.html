@@ -151,7 +151,7 @@ Usage:
       this.$.auth.createUserWithEmailAndPassword(detail.email, detail.password).then(self._handleSuccessfulUserCreation(detail.displayName), self._fireEvent('failed-account-creation'))
     },
 
-    _createUserViaExternalProvider: function () {
+    _createUserViaExternalProvider: function (evt, detail) {
       var self = this
 
       this.$.auth
