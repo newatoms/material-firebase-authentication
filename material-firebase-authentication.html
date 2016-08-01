@@ -20,7 +20,9 @@ Usage:
 <dom-module id="material-firebase-authentication">
   <template>
     <style>
-
+      :host {
+        display: block;
+      }
     </style>
 
     <firebase-auth id="auth" signed-in="{{signedIn}}" user="{{user}}" on-error="_handleAuthError" app="{{app}}"></firebase-auth>
