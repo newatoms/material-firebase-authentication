@@ -1,0 +1,311 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../gold-email-input/gold-email-input.html">
+<link rel="import" href="material-firebase-authentication-behavior.html">
+
+<!--
+A form to facilitate both singing in and signing up.
+
+By default the forms shows both the signing in and singning up on the same form, to change this behavior set either `hide-signup` or `hide-signin` to make the form do the one or the other.
+
+Usage:
+
+    <material-authentication-form hide-signup on-signin="_handleSignIn"></material-authentication-form>
+
+@demo demo/material-authentication-form.html
+-->
+<dom-module id="material-authentication-form">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: var(--light-theme-background-color, white);
+        --material-error-color: var(--paper-deep-orange-a700);
+      }
+
+      h1 {
+        @apply(--paper-font-headline);
+        text-align: center;
+      }
+
+      section p {
+        @apply(--layout-horizontal);
+        @apply(--paper-font-subhead);
+        margin-top: 48px;
+        text-align: center;
+      }
+
+      #buttons {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+
+      #buttons paper-button {
+        width: 100%;
+        margin: 32px 5px 24px 5px;
+        height: 40px;
+        @apply(--paper-font-subhead);
+      }
+
+      #buttons paper-button:first-of-type:not([disabled]) {
+        background-color: var(--login-button-background-color, --primary-color);
+        color: var(--light-theme-background-color, white);
+      }
+
+      #seperator {
+        text-align: center;
+        position: relative;
+        margin: 16px;
+      }
+
+      #seperator p {
+        position: relative;
+        display: inline-block;
+        padding: 0 16px;
+        margin: 0 0;
+        background-color: var(--light-theme-background-color, white);
+      }
+
+      #seperator:before {
+        content: '';
+        height: 1px;
+        background-color: var(--paper-grey-200);
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+      }
+
+      #auth-providers {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+
+      #auth-providers paper-icon-button {
+        border: 1px solid var(--paper-grey-200);
+        margin: 0px 5px;
+        @apply(--layout-flex);
+        height: 48px;
+        border-radius: 3px;
+      }
+
+      #error-message {
+        color: var(--paper-input-container-invalid-color, --error-color);
+      }
+
+    </style>
+
+    <section id="error-message" hidden$="{{!errorMessage}}">
+      <p>
+        {{errorMessage}}
+      </p>
+    </section>
+
+    <template is="dom-if" if="[[!hidePassword]]">
+      <section id="password-provider">
+
+        <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
+
+        <paper-input label="Password" value="{{password}}" type="password" auto-validate>
+          <paper-button id="forgot-password" suffix on-tap="requestResetPassword" hidden="{{hideSignIn}}">I forgot</paper-button>
+        </paper-input>
+
+        <section id="buttons">
+          <template is="dom-if" if="[[!hideSignUp]]">
+            <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}" hidden="{{hideSignUp}}">Create account</paper-button>
+          </template>
+          <template is="dom-if" if="[[!hideSignIn]]">
+            <paper-button on-tap="authWithPassword" disabled="{{!inputsValid}}" hidden="{{hideSignIn}}">Sign back in</paper-button>
+          </template>
+        </section>
+
+      </section>
+    </template>
+
+    <section id="seperator" hidden="{{_bothProvidersAndEmail}}">
+      <p>
+        Or use
+      </p>
+    </section>
+
+    <template is="dom-if" if="[[!_providersHidden]]">
+      <section id="auth-providers">
+        <paper-icon-button alt="Authenticate with Facebook" src="images/icon-co-facebook.svg" on-tap="authWithFacebook" hidden$="{{hideGoogle}}"></paper-icon-button>
+        <paper-icon-button alt="Authenticate with Google" src="images/icon-co-google.svg" on-tap="authWithGoogle" hidden$="{{hideFacebook}}"></paper-icon-button>
+        <paper-icon-button alt="Authenticate with Github" src="images/icon-co-github.svg" on-tap="authWithGithub" hidden$="{{hideGithub}}"></paper-icon-button>
+        <paper-icon-button alt="Authenticate with Twitter" src="images/icon-co-twitter.svg" on-tap="authWithTwitter" hidden$="{{hideTwitter}}"></paper-icon-button>
+      </section>
+    </template>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'material-authentication-form',
+
+      behaviors: [
+        MaterialFirebaseAuthenticationBehavior
+      ],
+
+      properties: {
+        /** error message */
+        errorMessage: {
+          type: String,
+          value: null,
+          computed: '_computeErrorMessage(errorCode)'
+        },
+        errorCode: {
+          type: String,
+          value: null
+        },
+        /** Both the e-mail and the password are filled in */
+        inputsValid: {
+          type: Boolean,
+          computed: '_emailAndPasswordValid(email, _emailInvalid, password)',
+          value: false
+        },
+        _emailInvalid: Boolean,
+        _providersHidden: {
+          type: Boolean,
+          computed: '_computeProvidersHidden(hideTwitter, hideFacebook, hideGithub, hideGoogle)'
+        },
+        _bothProvidersAndEmail: {
+          type: Boolean,
+          computed: '_computeBothProvidersAndEmail(hidePassword, _providersHidden)'
+        },
+      },
+      _computeProvidersHidden: function(a, b, c, d) {
+        return (a && b && c && d)
+      },
+      _computeBothProvidersAndEmail: function(a, b) {
+        return !(!a !== !!b)
+      },
+      _emailAndPasswordValid: function(email, emailInvalid, password) {
+        return (email !== '' && password !== '' && emailInvalid === false)
+      },
+      _computeErrorMessage(code) {
+        if (!code) {
+          return false
+        }
+        if (code === "auth/email-already-in-use") {
+          return 'That email adress already in use, perhaps you should try to sign in'
+        }
+        if (code === "auth/invalid-email") {
+          return 'Oops, this email adress is not valid'
+        }
+        if (code === "auth/user-not-found") {
+          return 'We can’t find a user associated with this e-mail address, check whether it is correct or create a new account with it.'
+        }
+        if (code === "auth/cancelled-popup-request") {
+          return 'You’ve cancelled the authentication popup, please try again'
+        }
+        if (code === "auth/popup-closed-by-user") {
+          return 'You’ve closed the authentication popup, please try again'
+        }
+        return 'Error'
+      },
+      /**
+       * Set the error message to display
+       */
+      error: function(error) {
+        return this.set('errorCode', error.code)
+      },
+
+      /** Fire the `signIn` event with provider `github` */
+      authWithGithub: function() {
+        return this.signIn('github')
+      },
+
+      /** Fire the `signIn` event with provider `google` */
+      authWithGoogle: function() {
+        return this.signIn('google')
+      },
+
+      /** Fire the `signIn` event with provider `facebook` */
+      authWithFacebook: function() {
+        return this.signIn('facebook')
+      },
+
+      /** Fire the `signIn` event with provider `twitter` */
+      authWithTwitter: function() {
+        return this.signIn('twitter')
+      },
+
+      /**
+       * Fire the `create-user` event
+       */
+      createUserWithPassword: function() {
+        var email = this.email
+        var password = this.password
+
+        this.set('errorCode', null)
+        return this.fire('create-user', {
+          email: email,
+          password: password
+        }, {
+          bubbles: false
+        })
+      },
+
+      /** Fire the `signIn` event with provider `password` and the email and password in the options */
+      authWithPassword: function() {
+        return this.signIn('password', {
+          email: this.email,
+          password: this.password
+        })
+      },
+
+      /**
+       * Non bubbling, to signal the need for signing in.
+       *
+       * @event sign-in
+       */
+
+      /**
+       * Fire the `sign-in` event
+       *
+       * @param {string} provider can be any valid Firebase authentication provider.
+       * @param {object} options object of the options to fire with the event, becomes event detail.
+       */
+      signIn: function(provider, options) {
+        this.set('errorCode', null)
+        return this.fire('sign-in', {
+          provider: provider,
+          options: options
+        }, {
+          bubbles: false
+        })
+      },
+
+      /**
+       * Non bubbling, to signal the need for signing up.
+       *
+       * @event sign-up
+       */
+
+      /**
+       * Fire the `create-user` event
+       */
+      createUserWithPassword: function() {
+        this.set('errorCode', null)
+        return this.fire('sign-up', {
+          email: this.email,
+          password: this.password
+        }, {
+          bubbles: false
+        })
+      },
+
+      requestResetPassword: function () {
+        this.fire('forgot-password', {
+          email: this.email
+        }, {
+          bubbles: false
+        })
+      }
+    });
+
+  </script>
+</dom-module>

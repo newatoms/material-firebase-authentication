@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="material-firebase-authentication.html">
+<link rel="import" href="material-firebase-authentication-behavior.html">
+
+<!--
+A tabbed element with a tab for Creating and Signing in using the material-firebase-authentication
+
+Usage:
+
+    <material-tabbed-firebase-authentication hide-password hide-twitter hide-facebook hide-google></material-tabbed-firebase-authentication>
+
+@demo demo/material-tabbed-firebase-authentication.html
+-->
+<dom-module id="material-tabbed-firebase-authentication">
+  <template>
+    <style>
+      paper-tabs {
+        margin-bottom: 6px;
+        --paper-tabs-selection-bar-color: var(--accent-color);
+        background-color: var(--primary-color);
+        color: var(--primary-background-color);
+      }
+    </style>
+
+    <paper-tabs selected="{{tab}}" autoselect>
+      <paper-tab>Create account</paper-tab>
+      <paper-tab>Sign in</paper-tab>
+    </paper-tabs>
+
+    <material-firebase-authentication hide-sign-up="{{tab}}" hide-sign-in="{{!tab}}" hide-twitter="{{hideTwitter}}" hide-facebook="{{hideFacebook}}" hide-github="{{hideGithub}}" hide-google="{{hideGoogle}}" hide-password="{{hidePassword}}" on-sign-in="_signInHandler" on-sign-up="_signUpHandler" on-forgot-password="_forgotPasswordHandler"></material-firebase-authentication>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'material-tabbed-firebase-authentication',
+
+      behaviors: [
+        MaterialFirebaseAuthenticationBehavior
+      ],
+
+      properties: {
+        /** The tab that is showing, 0 for 'Create account' and 1 for 'Sign in' */
+        tab: {
+          type: Number,
+          value: 0
+        }
+      }
+
+    });
+
+  </script>
+</dom-module>

@@ -3,8 +3,8 @@
 <link rel="import" href="../paper-button/paper-button.html">
 
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="material-sign-in-form.html">
-<link rel="import" href="material-create-user-form.html">
+<link rel="import" href="material-authentication-form.html">
+<link rel="import" href="material-firebase-authentication-behavior.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -20,158 +20,111 @@ Usage:
 <dom-module id="material-firebase-authentication">
   <template>
     <style>
-    :host {
-      display: block;
-    }
-    paper-button {
-      color: inherit;
-    }
+
     </style>
 
-    <firebase-auth  id="auth"
-                    signed-in="{{signedIn}}"
-                    user="{{user}}"
-                    on-error="_handleAuthError"
-                    app="{{app}}"
-                    ></firebase-auth>
+    <firebase-auth id="auth" signed-in="{{signedIn}}" user="{{user}}" on-error="_handleAuthError" app="{{app}}"></firebase-auth>
 
-    <iron-pages selected="{{page}}" attr-for-selected="data-page">
-      <section data-page="signin">
-        <material-sign-in-form  on-sign-in="_signInFormSignInHandler"
-                                on-request-reset-password="_requestResetPassword"
-                                no-external-authentication="{{noExternalAuthentication}}"
-                                no-auth-via-github="{{noAuthViaGithub}}"
-                                no-auth-via-google="{{noAuthViaGoogle}}"
-                                no-auth-via-facebook="{{noAuthViaFacebook}}"
-                                no-auth-via-twitter="{{noAuthViaTwitter}}"
-                                ></material-sign-in-form>
-      </section>
-      <section data-page="signup">
-        <material-create-user-form  on-sign-in="_createUserViaExternalProvider"
-                                    on-create-user="_createUser"
-                                    no-external-authentication="{{noExternalAuthentication}}"
-                                    no-auth-via-github="{{noAuthViaGithub}}"
-                                    no-auth-via-google="{{noAuthViaGoogle}}"
-                                    no-auth-via-facebook="{{noAuthViaFacebook}}"
-                                    no-auth-via-twitter="{{noAuthViaTwitter}}"
-                                    ></material-create-user-form>
-      </section>
-      <section data-page="signout">
-        <paper-button signOutButton on-tap="signOut">Sign out</paper-button>
-      </section>
-    </iron-pages>
+    <template is="dom-if" if="[[signedIn]]">
+      <paper-button on-tap="signOut">Sign out</paper-button>
+    </template>
+
+    <template is="dom-if" if="[[!signedIn]]">
+      <material-authentication-form hide-sign-in="{{hideSignIn}}" hide-sign-up="{{hideSignUp}}" hide-twitter="{{hideTwitter}}" hide-facebook="{{hideFacebook}}" hide-github="{{hideGithub}}" hide-google="{{hideGoogle}}" hide-password="{{hidePassword}}" on-sign-in="_signInHandler" on-sign-up="_signUpHandler" on-forgot-password="_forgotPasswordHandler"></material-authentication-form>
+    </template>
+
   </template>
   <script>
-  Polymer({
+    Polymer({
 
-    is: 'material-firebase-authentication',
+      is: 'material-firebase-authentication',
 
-    properties: {
-      /** The current page to show, valid values are: `signIn`, `signup` */
-      page: {
-        type: String,
-        value: 'signin'
+      behaviors: [
+        MaterialFirebaseAuthenticationBehavior
+      ],
+
+      properties: {
+        /** True if the client is authenticated and false if the client is not authenticated */
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        /** The currently authenticated user with user-related metadata from `firebase-auth` */
+        user: {
+          type: Object,
+          notify: true
+        },
+        /** The firebase app currently functioning in firebase-auth  */
+        app: {
+          type: Object,
+          notify: true
+        },
+        _emailInvalid: Boolean,
+        _providersHidden: {
+          type: Boolean,
+          computed: '_computeProvidersHidden(hideTwitter, hideFacebook, hideGithub, hideGoogle)'
+        },
+        _bothProvidersAndEmail: {
+          type: Boolean,
+          computed: '_computeBothProvidersAndEmail(hidePassword, _providersHidden)'
+        },
       },
-      /** True if the client is authenticated and false if the client is not authenticated */
-      signedIn: {
-        type: Boolean,
-        notify: true,
-        value: false
+
+      _computeProvidersHidden: function(a, b, c, d) {
+        return (a && b && c && d)
       },
-      /** The currently authenticated user with user-related metadata from `firebase-auth` */
-      user: {
-        type: Object,
-        notify: true
+      _computeBothProvidersAndEmail: function(a, b) {
+        return !(!a !== !!b)
       },
-      /** The firebase app currently functioning in firebase-auth  */
-      app: {
-        type: Object,
-        notify: true
+
+      signOut: function(evt, detail) {
+        var self = this
+        this.$.auth.signOut().then(self.fire('successful-sign-out'), self.fire('failed-sign-out'))
       },
-      /** Don't allow users to login/create an account with an external authentication provider  */
-      noExternalAuthentication: {
-        type: Boolean,
-        value: false
+
+      _forgotPasswordHandler: function(evt, detail) {
+        var self = this
+        var auth = this.app.auth();
+        auth.sendPasswordResetEmail(detail.email).catch(function(error) {
+          self._handleAuthError('Error resetting password', error)
+        })
       },
-      /** Enable the user to login/create an account via Github  */
-      noAuthViaGithub: {
-        type: Boolean,
-        value: false
+
+      _signInHandler: function(evt, detail) {
+        var self = this
+
+        if (detail.provider === 'password' && detail.options) {
+          return this.$.auth
+            .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('successful-sign-in'), self.fire('failed-sign-in'))
+        }
+        this.$.auth
+          .signInWithPopup(detail.provider).then(self.fire('successful-sign-in'), self.fire('failed-sign-in'))
       },
-      /** Enable the user to login/create an account via Google  */
-      noAuthViaGoogle: {
-        type: Boolean,
-        value: false
+
+      _handleAuthError: function(evt, error) {
+        console.error(error)
+        this.fire('error', error)
+        this.querySelector('material-authentication-form').error(error)
       },
-      /** Enable the user to login/create an account via Facebook  */
-      noAuthViaFacebook: {
-        type: Boolean,
-        value: false
+
+      _signUpHandler: function(evt, detail) {
+        var self = this
+        this.$.auth.createUserWithEmailAndPassword(detail.email, detail.password).then(self._handleSuccessfulUserCreation(detail.displayName), self.fire('failed-account-creation'))
       },
-      /** Enable the user to login/create an account via Twitter  */
-      noAuthViaTwitter: {
-        type: Boolean,
-        value: false
+
+      _createUserViaExternalProvider: function(evt, detail) {
+        var self = this
+
+        this.$.auth
+          .signInWithPopup(detail.provider).then(self._fireEvent('user-created'), self._fireEvent('failed-to-create-account'))
       },
-    },
 
-    signOut: function (evt, detail) {
-      var self = this
-      this.$.auth.signOut().then(self._fireEvent('successful-sign-out'), self._fireEvent('failed-sign-out'))
-    },
+      _handleSuccessfulUserCreation: function(displayName) {
+        this.fire('user-created')
+      },
 
-    _requestResetPassword: function (evt, detail) {
-      var self = this
-      var auth = this.app.auth();
-      auth.sendPasswordResetEmail(detail.email).catch(function (error) {
-        self._handleAuthError('forgot password error event', error)
-      })
-    },
+    });
 
-    _signInFormSignInHandler: function (evt, detail) {
-      var self = this
-
-      if (detail.provider === 'password' && detail.options) {
-        return this.$.auth
-        .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self._fireEvent('successful-sign-in'), self._fireEvent('failed-sign-in'))
-      }
-      this.$.auth
-      .signInWithPopup(detail.provider).then(self._fireEvent('successful-sign-in'), self._fireEvent('failed-sign-in'))
-    },
-
-    _handleAuthError: function (evt, error) {
-      console.error(error)
-      this.fire('error', error)
-      this.querySelector('material-sign-in-form').error(error)
-      this.querySelector('material-create-user-form').error(error)
-    },
-
-    _createUser: function (evt, detail) {
-      var self = this
-      this.$.auth.createUserWithEmailAndPassword(detail.email, detail.password).then(self._handleSuccessfulUserCreation(detail.displayName), self._fireEvent('failed-account-creation'))
-    },
-
-    _createUserViaExternalProvider: function (evt, detail) {
-      var self = this
-
-      this.$.auth
-      .signInWithPopup(detail.provider).then(self._fireEvent('user-created'), self._fireEvent('failed-to-create-account'))
-    },
-
-    _fireEvent: function (eventDescription, payload) {
-      this.fire(eventDescription, payload)
-    },
-
-    _handleSuccessfulUserCreation: function (displayName) {
-      this._updateProfileWithDisplayName(displayName)
-      this._fireEvent('user-created')
-    },
-
-    _updateProfileWithDisplayName: function (displayName) {
-      var self = this
-      // TODO set displayName with proper callback function which waits until this.user is loaded.
-      setTimeout(function(displayName){ self.user.updateProfile({displayName: displayName}) }, 2000);
-    }
-  });
   </script>
 </dom-module>
