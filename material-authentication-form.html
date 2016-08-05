@@ -107,15 +107,17 @@ Usage:
         <gold-email-input label="E-mail address" value="{{email}}" auto-validate invalid="{{_emailInvalid}}"></gold-email-input>
 
         <paper-input label="Password" value="{{password}}" type="password" auto-validate>
-          <paper-button id="forgot-password" suffix on-tap="requestResetPassword" hidden="{{hideSignIn}}">I forgot</paper-button>
+          <template is="dom-if" if="[[!hideSignIn]]">
+            <paper-button id="forgot-password" suffix on-tap="requestResetPassword">I forgot</paper-button>
+          </template>
         </paper-input>
 
         <section id="buttons">
           <template is="dom-if" if="[[!hideSignUp]]">
-            <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}" hidden="{{hideSignUp}}">Create account</paper-button>
+            <paper-button on-tap="createUserWithPassword" disabled="{{!inputsValid}}">Create account</paper-button>
           </template>
           <template is="dom-if" if="[[!hideSignIn]]">
-            <paper-button on-tap="authWithPassword" disabled="{{!inputsValid}}" hidden="{{hideSignIn}}">Sign back in</paper-button>
+            <paper-button on-tap="authWithPassword" disabled="{{!inputsValid}}">Sign back in</paper-button>
           </template>
         </section>
 
