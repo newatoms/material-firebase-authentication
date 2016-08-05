@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <title>material-authentication-form demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../material-authentication-form.html">
+    <link rel="import" href="../../polymerfire/firebase-app.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container">
+      <h3>Basic Demo</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Hide sign up</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form hide-sign-up></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Hide sign in</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form hide-sign-in></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Hide password auth</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form hide-password></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Hide most auth</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form hide-password hide-twitter hide-facebook hide-google></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Hide provider auth</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form hide-twitter hide-github hide-facebook hide-google></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Errors</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form error-code="auth/cancelled-popup-request" hide-twitter hide-github hide-facebook hide-google email="some.wrang.email"></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Errors</h3>
+      <demo-snippet>
+        <template>
+          <material-authentication-form error-code="auth/email-already-in-use" hide-password></material-authentication-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

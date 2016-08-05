@@ -1,0 +1,53 @@
+<script>
+    /**
+    * The shared properties of the material-firebase-authentication
+    * @polymerBehavior
+    */
+    MaterialFirebaseAuthenticationBehaviorImpl = {
+      properties: {
+        /** Show only the signing in related elements **/
+        hideSignUp: {
+          type: Boolean,
+          value: false
+        },
+        /** Show only the signing up related elements **/
+        hideSignIn: {
+          type: Boolean,
+          value: false
+        },
+        /** Hide signing in using Firebase's Password provider */
+        hidePassword: {
+          type: Boolean,
+          value: false
+        },
+        /** Hide Github provider signing in */
+        hideGithub: {
+          type: Boolean,
+          value: false
+        },
+        /** Hide Google provider signing in */
+        hideGoogle: {
+          type: Boolean,
+          value: false
+        },
+        /** Hide Facebook provider signing in */
+        hideFacebook: {
+          type: Boolean,
+          value: false
+        },
+        /** Hide Twitter provider signing in */
+        hideTwitter: {
+          type: Boolean,
+          value: false
+        },
+      },
+    };
+
+    /**
+    * The shared properties of the material-firebase-authentication with app-localize mixed in
+    * @polymerBehavior
+    */
+    MaterialFirebaseAuthenticationBehavior = [
+      MaterialFirebaseAuthenticationBehaviorImpl
+    ]
+</script>
