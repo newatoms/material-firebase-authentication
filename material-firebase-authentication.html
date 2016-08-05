@@ -1,10 +1,16 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-pages/iron-pages.html">
-<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import"
+  href="../polymer/polymer.html">
+<link rel="import"
+  href="../iron-pages/iron-pages.html">
+<link rel="import"
+  href="../paper-button/paper-button.html">
 
-<link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="material-authentication-form.html">
-<link rel="import" href="material-firebase-authentication-behavior.html">
+<link rel="import"
+  href="../polymerfire/firebase-auth.html">
+<link rel="import"
+  href="material-authentication-form.html">
+<link rel="import"
+  href="material-firebase-authentication-behavior.html">
 
 <!--
 Material design application to handle Firebase authentication, sign up and all of its related usecases.
@@ -23,16 +29,32 @@ Usage:
       :host {
         display: block;
       }
+
     </style>
 
-    <firebase-auth id="auth" signed-in="{{signedIn}}" user="{{user}}" on-error="_handleAuthError" app="{{app}}"></firebase-auth>
+    <firebase-auth id="auth"
+      signed-in="{{signedIn}}"
+      user="{{user}}"
+      on-error="_handleAuthError"
+      app="{{app}}"></firebase-auth>
 
-    <template is="dom-if" if="[[signedIn]]">
+    <template is="dom-if"
+      if="[[signedIn]]">
       <paper-button on-tap="signOut">Sign out</paper-button>
     </template>
 
-    <template is="dom-if" if="[[!signedIn]]">
-      <material-authentication-form hide-sign-in="{{hideSignIn}}" hide-sign-up="{{hideSignUp}}" hide-twitter="{{hideTwitter}}" hide-facebook="{{hideFacebook}}" hide-github="{{hideGithub}}" hide-google="{{hideGoogle}}" hide-password="{{hidePassword}}" on-sign-in="_signInHandler" on-sign-up="_signUpHandler" on-forgot-password="_forgotPasswordHandler"></material-authentication-form>
+    <template is="dom-if"
+      if="[[!signedIn]]">
+      <material-authentication-form hide-sign-in="{{hideSignIn}}"
+        hide-sign-up="{{hideSignUp}}"
+        hide-twitter="{{hideTwitter}}"
+        hide-facebook="{{hideFacebook}}"
+        hide-github="{{hideGithub}}"
+        hide-google="{{hideGoogle}}"
+        hide-password="{{hidePassword}}"
+        on-sign-in="_signInHandler"
+        on-sign-up="_signUpHandler"
+        on-forgot-password="_forgotPasswordHandler"></material-authentication-form>
     </template>
 
   </template>
@@ -73,56 +95,100 @@ Usage:
         },
       },
 
-      _computeProvidersHidden: function(a, b, c, d) {
+      _computeProvidersHidden: function(a, b,
+        c, d) {
         return (a && b && c && d)
       },
-      _computeBothProvidersAndEmail: function(a, b) {
+      _computeBothProvidersAndEmail: function(
+        a, b) {
         return !(!a !== !!b)
       },
 
       signOut: function(evt, detail) {
         var self = this
-        this.$.auth.signOut().then(self.fire('successful-sign-out'), self.fire('failed-sign-out'))
+        this.$.auth.signOut().then(function() {
+          self.fire(
+            'successful-sign-out')
+        }, function() {
+          self.fire('failed-sign-out')
+        })
       },
 
-      _forgotPasswordHandler: function(evt, detail) {
+      _forgotPasswordHandler: function(evt,
+        detail) {
         var self = this
         var auth = this.app.auth();
-        auth.sendPasswordResetEmail(detail.email).catch(function(error) {
-          self._handleAuthError('Error resetting password', error)
-        })
+        auth.sendPasswordResetEmail(detail.email)
+          .catch(function(error) {
+            self._handleAuthError(
+              'Error resetting password',
+              error)
+          })
       },
 
       _signInHandler: function(evt, detail) {
         var self = this
 
-        if (detail.provider === 'password' && detail.options) {
+        if (detail.provider === 'password' &&
+          detail.options) {
           return this.$.auth
-            .signInWithEmailAndPassword(detail.options.email, detail.options.password).then(self.fire('successful-sign-in'), self.fire('failed-sign-in'))
+            .signInWithEmailAndPassword(
+              detail.options.email, detail.options
+              .password).then(function() {
+              self.fire(
+                'successful-sign-in')
+            }, function() {
+              self.fire('failed-sign-in')
+            })
         }
         this.$.auth
-          .signInWithPopup(detail.provider).then(self.fire('successful-sign-in'), self.fire('failed-sign-in'))
+          .signInWithPopup(detail.provider)
+          .then(self.fire(
+            'successful-sign-in'), self.fire(
+            'failed-sign-in'))
       },
 
       _handleAuthError: function(evt, error) {
         console.error(error)
         this.fire('error', error)
-        this.querySelector('material-authentication-form').error(error)
+        this.querySelector(
+            'material-authentication-form')
+          .error(error)
       },
 
       _signUpHandler: function(evt, detail) {
         var self = this
-        this.$.auth.createUserWithEmailAndPassword(detail.email, detail.password).then(self._handleSuccessfulUserCreation(detail.displayName), self.fire('failed-account-creation'))
+        this.$.auth.createUserWithEmailAndPassword(
+          detail.email, detail.password).then(
+          function() {
+            self._handleSuccessfulUserCreation(
+              detail.displayName)
+          },
+          function() {
+            self.fire(
+              'failed-account-creation'
+            )
+          })
       },
 
-      _createUserViaExternalProvider: function(evt, detail) {
+      _createUserViaExternalProvider: function(
+        evt, detail) {
         var self = this
 
         this.$.auth
-          .signInWithPopup(detail.provider).then(self._fireEvent('user-created'), self._fireEvent('failed-to-create-account'))
+          .signInWithPopup(detail.provider)
+          .then(function() {
+            self._fireEvent(
+              'user-created')
+          }, function() {
+            self._fireEvent(
+              'failed-to-create-account'
+            )
+          })
       },
 
-      _handleSuccessfulUserCreation: function(displayName) {
+      _handleSuccessfulUserCreation: function(
+        displayName) {
         this.fire('user-created')
       },
 
