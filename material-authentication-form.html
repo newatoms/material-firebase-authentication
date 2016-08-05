@@ -190,21 +190,27 @@ Usage:
           return false
         }
         if (code === "auth/email-already-in-use") {
-          return 'That email adress already in use, perhaps you should try to sign in'
+          return 'That email adress already in use, perhaps you should try to sign in.'
         }
         if (code === "auth/invalid-email") {
-          return 'Oops, this email adress is not valid'
+          return 'Oops, this email adress is not valid.'
         }
         if (code === "auth/user-not-found") {
           return 'We can’t find a user associated with this e-mail address, check whether it is correct or create a new account with it.'
         }
         if (code === "auth/cancelled-popup-request") {
-          return 'You’ve cancelled the authentication popup, please try again'
+          return 'You’ve cancelled the authentication popup, please try again.'
         }
         if (code === "auth/popup-closed-by-user") {
-          return 'You’ve closed the authentication popup, please try again'
+          return 'You’ve closed the authentication popup, please try again.'
         }
-        return 'Error'
+        if (code === "auth/weak-password") {
+          return 'We can’t accept passwords that are that short, try something that is at least 6 characters.'
+        }
+        if (code === "auth/user-disabled") {
+          return 'Sorry, your account seems to be disabled.'
+        }
+        return 'Sorry, there seems to be something wrong and we couldn’t fulfill your request.'
       },
       /**
        * Set the error message to display
